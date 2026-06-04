@@ -1,0 +1,27 @@
+name: it_quiz_arena
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  connectivity_plus: ^7.1.1
+  flutter:
+    sdk: flutter
+  flutter_dotenv: ^5.1.0
+  flutter_launcher_icons: ^0.14.4
+  google_sign_in: ^7.2.0
+  http: ^1.6.0
+  shared_preferences: ^2.5.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env

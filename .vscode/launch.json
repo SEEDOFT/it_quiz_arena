@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter: Debug (Android)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [],
+      "deviceId": "android",
+      "preLaunchTask": "flutter: debug-prepare"
+    },
+    {
+      "name": "Flutter: Debug (iOS)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [],
+      "deviceId": "iPhone",
+      "preLaunchTask": "flutter: debug-prepare"
+    },
+    {
+      "name": "Flutter: Debug (Auto)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": []
+    },
+    {
+      "name": "Flutter: Profile (Android)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--profile"
+      ],
+      "deviceId": "android"
+    },
+    {
+      "name": "Flutter: Release (Android)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--release"
+      ],
+      "deviceId": "android"
+    }
+  ]
+}

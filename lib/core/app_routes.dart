@@ -1,12 +1,13 @@
 import "package:flutter/material.dart";
-import "../screens/home/home_screen.dart";
-import "../screens/course_selection/course_selection_screen.dart";
-import "../screens/settings/settings_screen.dart";
-import "../screens/countdown/countdown_screen.dart";
-import "../screens/results/results_screen.dart";
+
 import "../screens/achievements/achievements_screen.dart";
+import "../screens/countdown/countdown_screen.dart";
+import "../screens/course_selection/course_selection_screen.dart";
+import "../screens/home/home_screen.dart";
 import "../screens/profile/profile_screen.dart";
 import "../screens/ranks/ranks_screen.dart";
+import "../screens/results/results_screen.dart";
+import "../screens/settings/settings_screen.dart";
 
 class AppRoutes {
   static const String home = "/home";
@@ -20,16 +21,18 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
-      home: (context) =>
-          const HomeScreen(numberOfQuestions: 10, timePerQuestion: 30),
+      home: (context) => const HomeScreen(numberOfQuestions: 10, timePerQuestion: 30),
       AppRoutes.courses: (context) => const CourseSelectionScreen(),
       countdown: (context) {
-        final args =
-            ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-        final courseId = args?['courseId'] as int;
-        final questionCount = args?['questionCount'] as int? ?? 10;
-        final timePerQuestion = args?['timePerQuestion'] as int? ?? 30;
-        final difficulty = args?['difficulty'] as String? ?? 'Beginner';
+        final args = ModalRoute.of(context)?.settings.arguments;
+        Map<String, dynamic>? parsedArgs;
+        if (args is Map<String, dynamic>) {
+          parsedArgs = args;
+        }
+        final courseId = (parsedArgs?['courseId'] as int?) ?? 0;
+        final questionCount = parsedArgs?['questionCount'] as int? ?? 10;
+        final timePerQuestion = parsedArgs?['timePerQuestion'] as int? ?? 30;
+        final difficulty = parsedArgs?['difficulty'] as String? ?? 'Beginner';
         return CountdownScreen(
           courseId: courseId,
           questionCount: questionCount,
@@ -38,14 +41,17 @@ class AppRoutes {
         );
       },
       results: (context) {
-        final args =
-            ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+        final args = ModalRoute.of(context)?.settings.arguments;
+        Map<String, dynamic>? parsedArgs;
+        if (args is Map<String, dynamic>) {
+          parsedArgs = args;
+        }
         return ResultsScreen(
-          sessionData: args?['sessionData'] as Map<String, dynamic>?,
-          xpGained: args?['xpGained'] as int? ?? 0,
-          level: args?['level'] as int?,
-          levelUp: args?['levelUp'] as bool? ?? false,
-          newAchievements: (args?['newAchievements'] as List<dynamic>?)
+          sessionData: parsedArgs?['sessionData'] as Map<String, dynamic>?,
+          xpGained: parsedArgs?['xpGained'] as int? ?? 0,
+          level: parsedArgs?['level'] as int?,
+          levelUp: parsedArgs?['levelUp'] as bool? ?? false,
+          newAchievements: (parsedArgs?['newAchievements'] as List<dynamic>?)
               ?.map((a) => a as Map<String, dynamic>)
               .toList(),
         );

@@ -1,0 +1,50 @@
+[
+  {
+    "key": "cmd+k cmd+r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Run (Auto Device)",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Run Android",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+i",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Run iOS Simulator",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+b a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Build Android",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+b i",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Build iOS (Simulator)",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+b d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Build iOS (Device)",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+c",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Clean & Get",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Flutter: Test",
+    "when": "editorTextFocus"
+  }
+]

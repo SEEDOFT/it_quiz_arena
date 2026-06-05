@@ -3,8 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:it_quiz_arena/core/app_constants.dart';
 
 class ApiService {
+  static http.Client httpClient = http.Client();
+
   static Future<Map<String, dynamic>> googleLogin(String idToken) async {
-    final response = await http.post(
+    final response = await httpClient.post(
       Uri.parse('${AppConstants.apiBaseUrl}/auth/google'),
       headers: {
         'Content-Type': 'application/json',
@@ -23,14 +25,14 @@ class ApiService {
   }
 
   static Future<void> logout(String token) async {
-    await http.post(
+    await httpClient.post(
       Uri.parse('${AppConstants.apiBaseUrl}/logout'),
       headers: _bearerHeaders(token),
     );
   }
 
   static Future<List<dynamic>> getCourses() async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/courses'),
       headers: _jsonHeaders(),
     );
@@ -53,7 +55,7 @@ class ApiService {
     if (questionCount != null) body['question_count'] = questionCount;
     if (difficulty != null) body['difficulty'] = difficulty;
 
-    final response = await http.post(
+    final response = await httpClient.post(
       Uri.parse('${AppConstants.apiBaseUrl}/quiz/start'),
       headers: _bearerHeaders(token),
       body: jsonEncode(body),
@@ -75,7 +77,7 @@ class ApiService {
     required int timeSpent,
     required String token,
   }) async {
-    final response = await http.post(
+    final response = await httpClient.post(
       Uri.parse('${AppConstants.apiBaseUrl}/quiz/$sessionId/answer'),
       headers: _bearerHeaders(token),
       body: jsonEncode({
@@ -100,7 +102,7 @@ class ApiService {
     required int sessionId,
     required String token,
   }) async {
-    final response = await http.post(
+    final response = await httpClient.post(
       Uri.parse('${AppConstants.apiBaseUrl}/quiz/$sessionId/finish'),
       headers: _bearerHeaders(token),
     );
@@ -115,7 +117,7 @@ class ApiService {
   }
 
   static Future<List<dynamic>> getLeaderboard({int limit = 10}) async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/leaderboard?limit=$limit'),
       headers: _jsonHeaders(),
     );
@@ -129,7 +131,7 @@ class ApiService {
   }
 
   static Future<List<dynamic>> getAchievements() async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/achievements'),
       headers: _jsonHeaders(),
     );
@@ -143,7 +145,7 @@ class ApiService {
   }
 
   static Future<List<dynamic>> getUserAchievements(String token) async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/user/achievements'),
       headers: _bearerHeaders(token),
     );
@@ -157,7 +159,7 @@ class ApiService {
   }
 
   static Future<List<dynamic>> getRanks() async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/ranks'),
       headers: _jsonHeaders(),
     );
@@ -171,7 +173,7 @@ class ApiService {
   }
 
   static Future<Map<String, dynamic>> getUserProfile(String token) async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/user'),
       headers: _bearerHeaders(token),
     );
@@ -185,7 +187,7 @@ class ApiService {
   }
 
   static Future<Map<String, dynamic>> getUserStats(String token) async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/user/stats'),
       headers: _bearerHeaders(token),
     );
@@ -199,7 +201,7 @@ class ApiService {
   }
 
   static Future<Map<String, dynamic>> getSettings(String token) async {
-    final response = await http.get(
+    final response = await httpClient.get(
       Uri.parse('${AppConstants.apiBaseUrl}/user/settings'),
       headers: _bearerHeaders(token),
     );
@@ -216,7 +218,7 @@ class ApiService {
     Map<String, dynamic> data,
     String token,
   ) async {
-    final response = await http.put(
+    final response = await httpClient.put(
       Uri.parse('${AppConstants.apiBaseUrl}/user/settings'),
       headers: _bearerHeaders(token),
       body: jsonEncode(data),

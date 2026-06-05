@@ -17,7 +17,7 @@ class Question {
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
     id: json['id'] as int,
-    question: json['question_text'] as String,
+    question: (json['question_text'] as String?) ?? '',
     options: List<String>.from(json['options']),
     correctAnswer: json['correct_answer'] as int?,
     explanation: json['explanation'] as String?,

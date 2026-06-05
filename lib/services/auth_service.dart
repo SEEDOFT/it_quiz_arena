@@ -37,6 +37,8 @@ class AuthService extends ChangeNotifier {
     final userJson = prefs.getString(_userKey);
     if (userJson != null) {
       _user = jsonDecode(userJson) as Map<String, dynamic>;
+    } else {
+      _user = null;
     }
     notifyListeners();
   }

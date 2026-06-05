@@ -1,15 +1,21 @@
 class QuizResult {
+  final int sessionId;
   final int score;
-  final int correctAnswers;
-  final int wrongAnswers;
   final int totalQuestions;
-  final int timeSpent;
+  final int correctCount;
+  final int wrongCount;
+  final int xpGained;
+  final int? newLevel;
+  final bool levelUp;
 
-  QuizResult({
+  const QuizResult({
+    required this.sessionId,
     required this.score,
-    required this.correctAnswers,
-    required this.wrongAnswers,
     required this.totalQuestions,
-    required this.timeSpent,
+    required this.correctCount,
+    required this.wrongCount,
+    required this.xpGained,
+    this.newLevel,
+    this.levelUp = false,
   });
 }

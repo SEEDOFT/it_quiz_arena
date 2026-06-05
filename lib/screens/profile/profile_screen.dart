@@ -338,8 +338,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _rankSection(ColorScheme cs, UserStats? stats) {
-    if (stats == null || stats.currentRank == null)
+    if (stats == null || stats.currentRank == null) {
       return const SizedBox.shrink();
+    }
 
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoutes.ranks),

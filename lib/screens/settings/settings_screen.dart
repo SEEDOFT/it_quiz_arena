@@ -31,9 +31,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await _controller.save();
     AppThemeNotifier().setTheme(_controller.settings.themeMode);
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Settings saved')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Settings saved')));
     }
   }
 
@@ -65,7 +65,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
             child: const Text('Reset'),
           ),
         ],
@@ -90,7 +92,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       listenable: _controller,
       builder: (context, _) {
         if (_controller.loading) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         final settings = _controller.settings;
@@ -128,7 +132,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SwitchListTile(
                     value: settings.showExplanation,
                     title: const Text("Show Explanation"),
-                    subtitle: const Text("Display explanation after wrong answer"),
+                    subtitle: const Text(
+                      "Display explanation after wrong answer",
+                    ),
                     onChanged: _controller.updateShowExplanation,
                   ),
                 ],
@@ -146,11 +152,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            _themeOption(context, 'System', Icons.brightness_auto, settings),
+                            _themeOption(
+                              context,
+                              'System',
+                              Icons.brightness_auto,
+                              settings,
+                            ),
                             const SizedBox(width: 6),
-                            _themeOption(context, 'Dark', Icons.dark_mode, settings),
+                            _themeOption(
+                              context,
+                              'Dark',
+                              Icons.dark_mode,
+                              settings,
+                            ),
                             const SizedBox(width: 6),
-                            _themeOption(context, 'Light', Icons.light_mode, settings),
+                            _themeOption(
+                              context,
+                              'Light',
+                              Icons.light_mode,
+                              settings,
+                            ),
                           ],
                         ),
                       ],
@@ -166,7 +187,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: _controller.saving ? null : _handleSave,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: cs.primary,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: _controller.saving
                       ? SizedBox(
@@ -177,7 +200,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: cs.onSurface,
                           ),
                         )
-                      : Text('Save Settings', style: TextStyle(color: cs.onSurface)),
+                      : Text(
+                          'Save Settings',
+                          style: TextStyle(color: cs.onSurface),
+                        ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -190,7 +216,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       : () => _confirmReset(context),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: cs.error),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: _controller.resetting
                       ? SizedBox(
@@ -217,7 +245,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     label: Text('Logout', style: TextStyle(color: cs.error)),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: cs.error),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                 ),
@@ -239,7 +269,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: cs.surface, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: cs.surface,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Row(
         children: [
           CircleAvatar(
@@ -264,19 +297,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Text(
                   name,
-                  style: TextStyle(color: cs.onSurface, fontSize: 16, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    color: cs.onSurface,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(email, style: TextStyle(color: cs.outline, fontSize: 13)),
                 Container(
                   margin: const EdgeInsets.only(top: 4),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: cs.primary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     rank,
-                    style: TextStyle(color: cs.primary, fontSize: 11, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      color: cs.primary,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -287,7 +331,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildSettingCard(BuildContext context, {required List<Widget> children}) {
+  Widget _buildSettingCard(
+    BuildContext context, {
+    required List<Widget> children,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -297,7 +344,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _themeOption(BuildContext context, String label, IconData icon, settings) {
+  Widget _themeOption(
+    BuildContext context,
+    String label,
+    IconData icon,
+    settings,
+  ) {
     final cs = Theme.of(context).colorScheme;
     final selected = settings.themeMode == label.toLowerCase();
 

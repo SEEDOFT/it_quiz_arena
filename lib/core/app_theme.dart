@@ -12,21 +12,96 @@ class AppTheme {
     final outline = cs.outline;
 
     return TextTheme(
-      displayLarge: TextStyle(fontSize: 57, fontWeight: FontWeight.w800, color: onSurface, fontFamily: _syne),
-      displayMedium: TextStyle(fontSize: 45, fontWeight: FontWeight.w800, color: onSurface, fontFamily: _syne),
-      displaySmall: TextStyle(fontSize: 36, fontWeight: FontWeight.w800, color: onSurface, fontFamily: _syne),
-      headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: onSurface, fontFamily: _syne),
-      headlineMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: onSurface, fontFamily: _syne),
-      headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: onSurface, fontFamily: _syne),
-      titleLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: onSurface, fontFamily: _syne),
-      titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: onSurface, fontFamily: _syne),
-      titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: onSurfaceVariant, fontFamily: _syne),
-      labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: onSurface, fontFamily: _syne),
-      labelMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: onSurface, fontFamily: _syne),
-      labelSmall: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: onSurfaceVariant, fontFamily: _syne),
-      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: onSurface, fontFamily: _dmSans),
-      bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: onSurfaceVariant, fontFamily: _dmSans),
-      bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: outline, fontFamily: _dmSans),
+      displayLarge: TextStyle(
+        fontSize: 57,
+        fontWeight: FontWeight.w800,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      displayMedium: TextStyle(
+        fontSize: 45,
+        fontWeight: FontWeight.w800,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      displaySmall: TextStyle(
+        fontSize: 36,
+        fontWeight: FontWeight.w800,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      headlineLarge: TextStyle(
+        fontSize: 32,
+        fontWeight: FontWeight.w800,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      headlineMedium: TextStyle(
+        fontSize: 28,
+        fontWeight: FontWeight.w700,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      titleLarge: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w700,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: onSurfaceVariant,
+        fontFamily: _syne,
+      ),
+      labelLarge: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      labelMedium: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w700,
+        color: onSurface,
+        fontFamily: _syne,
+      ),
+      labelSmall: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        color: onSurfaceVariant,
+        fontFamily: _syne,
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: onSurface,
+        fontFamily: _dmSans,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: onSurfaceVariant,
+        fontFamily: _dmSans,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: outline,
+        fontFamily: _dmSans,
+      ),
     );
   }
 
@@ -49,7 +124,10 @@ class AppTheme {
       colorScheme: cs,
       fontFamily: _dmSans,
       dividerColor: Colors.white.withValues(alpha: 0.08),
-      appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent, elevation: 0),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       textTheme: _buildTextTheme(cs),
     );
   }

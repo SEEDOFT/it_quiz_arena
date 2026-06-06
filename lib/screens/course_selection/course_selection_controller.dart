@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:it_quiz_arena/models/course.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
 import 'package:it_quiz_arena/services/settings_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseSelectionController extends ChangeNotifier {
   final TextEditingController searchController = TextEditingController();
@@ -34,7 +34,7 @@ class CourseSelectionController extends ChangeNotifier {
 
     try {
       await Future.wait([_loadCourses(), _loadSettings()]);
-    } catch (e) {
+    } on Exception catch (e) {
       error = e.toString();
     }
 
@@ -55,7 +55,7 @@ class CourseSelectionController extends ChangeNotifier {
         cats.add(c.category);
       }
       categories = cats.toList()..sort();
-    } catch (e) {
+    } on Exception catch (e) {
       error = e.toString();
     }
     loading = false;
@@ -115,7 +115,8 @@ class CourseSelectionController extends ChangeNotifier {
     return allCourses.where((course) {
       final query = searchController.text.toLowerCase();
 
-      final matchesSearch = query.isEmpty ||
+      final matchesSearch =
+          query.isEmpty ||
           course.title.toLowerCase().contains(query) ||
           course.description.toLowerCase().contains(query);
 
@@ -126,7 +127,10 @@ class CourseSelectionController extends ChangeNotifier {
 
       final matchesQuestionCount = course.questionCount >= questionCount;
 
-      return matchesSearch && matchesCategory && matchesDifficulty && matchesQuestionCount;
+      return matchesSearch &&
+          matchesCategory &&
+          matchesDifficulty &&
+          matchesQuestionCount;
     }).toList();
   }
 

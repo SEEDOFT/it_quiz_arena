@@ -206,7 +206,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         (a) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
-                            a.replaceAll('_', ' ').split(' ').map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '').join(' '),
+                            a
+                                .replaceAll('_', ' ')
+                                .split(' ')
+                                .map(
+                                  (w) => w.isNotEmpty
+                                      ? '${w[0].toUpperCase()}${w.substring(1)}'
+                                      : '',
+                                )
+                                .join(' '),
                             style: TextStyle(color: cs.onSurface),
                           ),
                         ),

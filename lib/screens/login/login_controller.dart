@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:it_quiz_arena/core/app_constants.dart';
@@ -51,7 +52,7 @@ class LoginController extends ChangeNotifier {
         isGoogleLoading = false;
         notifyListeners();
         return true;
-      } catch (e) {
+      } on Exception {
         subscription.cancel();
         rethrow;
       }
@@ -71,7 +72,7 @@ class LoginController extends ChangeNotifier {
       isGoogleLoading = false;
       notifyListeners();
       return false;
-    } catch (e) {
+    } on Exception catch (e) {
       errorMessage = 'Error: ${e.toString()}';
       isGoogleLoading = false;
       notifyListeners();

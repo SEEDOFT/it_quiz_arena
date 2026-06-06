@@ -51,7 +51,8 @@ class QuizController extends ChangeNotifier {
     _startQuiz();
   }
 
-  Question? get currentQuestion => questions.isEmpty ? null : questions[currentQuestionIndex];
+  Question? get currentQuestion =>
+      questions.isEmpty ? null : questions[currentQuestionIndex];
 
   Future<void> _startQuiz() async {
     final settings = await SettingsService().load();
@@ -88,12 +89,14 @@ class QuizController extends ChangeNotifier {
 
       sessionId = data['session']['id'] as int?;
       final questionsRaw = data['questions'] as List<dynamic>;
-      questions = questionsRaw.map((q) => Question.fromJson(q as Map<String, dynamic>)).toList();
+      questions = questionsRaw
+          .map((q) => Question.fromJson(q as Map<String, dynamic>))
+          .toList();
 
       loading = false;
       notifyListeners();
       _startTimer();
-    } catch (e) {
+    } on Exception catch (e) {
       error = e.toString();
       loading = false;
       notifyListeners();
@@ -167,7 +170,7 @@ class QuizController extends ChangeNotifier {
         streak = session['streak'] as int? ?? streak;
         highestStreak = session['highest_streak'] as int? ?? highestStreak;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       error = e.toString();
     }
 
@@ -205,7 +208,10 @@ class QuizController extends ChangeNotifier {
     final token = AuthService().token;
     if (token != null && sessionId != null) {
       try {
-        finishData = await ApiService.finishQuiz(sessionId: sessionId!, token: token);
+        finishData = await ApiService.finishQuiz(
+          sessionId: sessionId!,
+          token: token,
+        );
       } catch (_) {}
     }
 

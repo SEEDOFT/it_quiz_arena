@@ -1,8 +1,9 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:it_quiz_arena/models/user_profile.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService extends ChangeNotifier {
   static final AuthService _instance = AuthService._();
@@ -60,7 +61,7 @@ class AuthService extends ChangeNotifier {
 
       _isLoading = false;
       notifyListeners();
-    } catch (e) {
+    } on Exception {
       _isLoading = false;
       notifyListeners();
       rethrow;

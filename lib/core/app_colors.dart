@@ -38,7 +38,6 @@ class AppColors {
   // Category Colors
   static const Color categoryProgramming = Color(0xFF6366F1);
   static const Color categoryNetworking = Color(0xFF3B82F6);
-  static const Color categoryCyberSecurity = Color(0xFFEF4444);
   static const Color categoryDatabase = Color(0xFFA855F7);
   static const Color categoryWebDevelopment = Color(0xFF22C55E);
   static const Color categoryCloudDevOps = Color(0xFFF59E0B);

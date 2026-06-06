@@ -32,8 +32,6 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
         return AppColors.categoryProgramming;
       case 'Networking':
         return AppColors.categoryNetworking;
-      case 'Cyber Security':
-        return AppColors.categoryCyberSecurity;
       case 'Database':
         return AppColors.categoryDatabase;
       case 'Web Development':

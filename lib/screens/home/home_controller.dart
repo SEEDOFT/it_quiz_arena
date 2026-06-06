@@ -14,7 +14,19 @@ class HomeController extends ChangeNotifier {
 
   HomeController() {
     _loadSettings();
+    _loadUserProfile();
     loadLeaderboard();
+  }
+
+  Future<void> _loadUserProfile() async {
+    final token = _auth.token;
+    if (token == null) return;
+
+    try {
+      final profile = await ApiService.getUserProfile(token);
+      _auth.updateUser(profile);
+      notifyListeners();
+    } catch (_) {}
   }
 
   Future<void> _loadSettings() async {

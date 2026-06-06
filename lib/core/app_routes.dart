@@ -21,7 +21,8 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
-      home: (context) => const HomeScreen(numberOfQuestions: 10, timePerQuestion: 30),
+      home: (context) =>
+          const HomeScreen(numberOfQuestions: 10, timePerQuestion: 30),
       AppRoutes.courses: (context) => const CourseSelectionScreen(),
       countdown: (context) {
         final args = ModalRoute.of(context)?.settings.arguments;
@@ -52,8 +53,7 @@ class AppRoutes {
           level: parsedArgs?['level'] as int?,
           levelUp: parsedArgs?['levelUp'] as bool? ?? false,
           newAchievements: (parsedArgs?['newAchievements'] as List<dynamic>?)
-              ?.map((a) => a as Map<String, dynamic>)
-              .toList(),
+              ?.cast<String>(),
         );
       },
       settings: (context) => const SettingsScreen(),

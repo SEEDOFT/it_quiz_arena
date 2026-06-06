@@ -28,12 +28,13 @@ void main() {
 
       expect(auth.isAuthenticated, true);
       expect(auth.token, 'test-token');
-      expect(auth.user!['name'], 'Test');
+      expect(auth.user!.name, 'Test');
+      expect(auth.user!.email, 'test@test.com');
     });
 
     test('isAuthenticated false when token missing', () async {
       SharedPreferences.setMockInitialValues({
-        'auth_user': '{"name": "Test"}',
+        'auth_user': '{"id": 1, "name": "Test"}',
       });
       auth = AuthService();
       await auth.init();
@@ -59,9 +60,9 @@ void main() {
       auth = AuthService();
       await auth.init();
 
-      auth.updateUser({'name': 'New', 'email': 'new@test.com'});
+      auth.updateUser({'id': 4, 'name': 'New', 'email': 'new@test.com'});
 
-      expect(auth.user!['name'], 'New');
+      expect(auth.user!.name, 'New');
 
       final prefs = await SharedPreferences.getInstance();
       final saved = prefs.getString('auth_user');

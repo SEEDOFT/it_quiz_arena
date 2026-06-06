@@ -102,6 +102,11 @@ void main() {
               MockApiResponses.successEnvelope(MockApiResponses.sampleUser),
               200,
             );
+          case '/api/user/reset-progress':
+            return _jsonResponse(
+              MockApiResponses.successEnvelope(null),
+              200,
+            );
           case '/api/logout':
             return _jsonResponse(MockApiResponses.successEnvelope(null), 200);
           default:
@@ -230,6 +235,21 @@ void main() {
     test('getUserProfile returns user', () async {
       final result = await ApiService.getUserProfile('abc');
       expect(result['name'], 'Test User');
+    });
+
+    test('resetProgress returns successfully', () async {
+      await ApiService.resetProgress('abc');
+    });
+
+    test('resetProgress throws on error', () async {
+      ApiService.httpClient = MockClient((_) async => _jsonResponse(
+            MockApiResponses.errorEnvelope('Failed', 400),
+            400,
+          ));
+      expect(
+        () => ApiService.resetProgress('bad'),
+        throwsA(isA<Exception>()),
+      );
     });
 
     test('throws on non-200 response', () async {

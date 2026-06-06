@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/models/leaderboard.dart';
+
 import 'home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   final int numberOfQuestions;
   final int timePerQuestion;
 
-  const HomeScreen({
-    super.key,
-    required this.numberOfQuestions,
-    required this.timePerQuestion,
-  });
+  const HomeScreen({super.key, required this.numberOfQuestions, required this.timePerQuestion});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -155,16 +152,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      Text(
-                        '@$username',
-                        style: TextStyle(color: cs.outline, fontSize: 13),
-                      ),
+                      Text('@$username', style: TextStyle(color: cs.outline, fontSize: 13)),
                       const SizedBox(height: 4),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 3,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                         decoration: BoxDecoration(
                           color: cs.primary.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(12),
@@ -201,10 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Lv.$level · $xp XP',
                   style: TextStyle(color: cs.onSurfaceVariant, fontSize: 12),
                 ),
-                Text(
-                  '$nextXp XP to next rank',
-                  style: TextStyle(color: cs.outline, fontSize: 12),
-                ),
+                Text('$nextXp XP to next rank', style: TextStyle(color: cs.outline, fontSize: 12)),
               ],
             ),
           ],
@@ -216,36 +204,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildStatsRow(BuildContext context) {
     return Row(
       children: [
-        _statCard(
-          context,
-          Icons.quiz_outlined,
-          '${_controller.totalQuizzes}',
-          'Quizzes',
-        ),
+        _statCard(context, Icons.quiz_outlined, '${_controller.totalQuizzes}', 'Quizzes'),
         const SizedBox(width: 10),
-        _statCard(
-          context,
-          Icons.trending_up,
-          '${_controller.highestScore}',
-          'Best Score',
-        ),
+        _statCard(context, Icons.trending_up, '${_controller.highestScore}', 'Best Score'),
         const SizedBox(width: 10),
-        _statCard(
-          context,
-          Icons.local_fire_department,
-          '${_controller.bestStreak}',
-          'Best Streak',
-        ),
+        _statCard(context, Icons.local_fire_department, '${_controller.bestStreak}', 'Best Streak'),
       ],
     );
   }
 
-  Widget _statCard(
-    BuildContext context,
-    IconData icon,
-    String value,
-    String label,
-  ) {
+  Widget _statCard(BuildContext context, IconData icon, String value, String label) {
     final cs = Theme.of(context).colorScheme;
 
     return Expanded(
@@ -262,11 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 6),
             Text(
               value,
-              style: TextStyle(
-                color: cs.onSurface,
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
+              style: TextStyle(color: cs.onSurface, fontSize: 18, fontWeight: FontWeight.w800),
             ),
             Text(label, style: TextStyle(color: cs.outline, fontSize: 11)),
           ],
@@ -289,11 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             "Test Your IT Skills",
-            style: TextStyle(
-              color: cs.onSurface,
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-            ),
+            style: TextStyle(color: cs.onSurface, fontSize: 22, fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 4),
           Text(
@@ -305,17 +265,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _gameStat(context, "${_controller.questionCount}", "Questions"),
               const SizedBox(width: 10),
-              _gameStat(
-                context,
-                "${_controller.timePerQuestion}s",
-                "Per Question",
-              ),
+              _gameStat(context, "${_controller.timePerQuestion}s", "Per Question"),
               const SizedBox(width: 10),
-              _gameStat(
-                context,
-                "${_controller.questionCount * 50}",
-                "Max Pts",
-              ),
+              _gameStat(context, "${_controller.questionCount * 50}", "Max Pts"),
             ],
           ),
           const SizedBox(height: 16),
@@ -332,9 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: cs.primary,
                 foregroundColor: cs.onSurface,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
             ),
           ),
@@ -350,23 +300,16 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+          color: cs.primary.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           children: [
             Text(
               value,
-              style: TextStyle(
-                color: cs.onSurface,
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
+              style: TextStyle(color: cs.onSurface, fontSize: 18, fontWeight: FontWeight.w800),
             ),
-            Text(
-              label,
-              style: TextStyle(color: cs.onSurfaceVariant, fontSize: 11),
-            ),
+            Text(label, style: TextStyle(color: cs.onSurfaceVariant, fontSize: 11)),
           ],
         ),
       ),
@@ -390,10 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Text(
                 "TOP PLAYERS",
-                style: TextStyle(
-                  color: cs.onSurfaceVariant,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(color: cs.onSurfaceVariant, fontWeight: FontWeight.bold),
               ),
               Text("All time", style: TextStyle(color: cs.outline)),
             ],
@@ -431,11 +371,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           CircleAvatar(
-            backgroundColor: cs.primary.withValues(alpha: 0.2),
-            child: Text(
-              _initials(entry.playerName),
-              style: TextStyle(color: cs.primary, fontWeight: FontWeight.bold),
-            ),
+            backgroundColor: entry.avatar != null
+                ? Colors.transparent
+                : cs.primary.withValues(alpha: 0.2),
+            backgroundImage: entry.avatar != null
+                ? NetworkImage(entry.avatar!)
+                : null,
+            child: entry.avatar != null
+                ? null
+                : Text(
+                    _initials(entry.playerName),
+                    style: TextStyle(color: cs.primary, fontWeight: FontWeight.bold),
+                  ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -444,10 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(entry.playerName, style: TextStyle(color: cs.onSurface)),
                 if (entry.rank != null)
-                  Text(
-                    entry.rank!,
-                    style: TextStyle(color: cs.outline, fontSize: 11),
-                  ),
+                  Text(entry.rank!, style: TextStyle(color: cs.outline, fontSize: 11)),
               ],
             ),
           ),

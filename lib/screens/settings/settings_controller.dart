@@ -8,6 +8,8 @@ class SettingsController extends ChangeNotifier {
   final SettingsService _service = SettingsService();
   AppSettings settings = AppSettings.defaults();
   bool loading = true;
+  bool resetting = false;
+  bool saving = false;
 
   SettingsController() {
     loadSettings();
@@ -31,23 +33,8 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateQuestionCount(int value) {
-    settings.questionCount = value;
-    notifyListeners();
-  }
-
-  void updateTimePerQuestion(int value) {
-    settings.timePerQuestion = value;
-    notifyListeners();
-  }
-
   void updateShowExplanation(bool value) {
     settings.showExplanation = value;
-    notifyListeners();
-  }
-
-  void updateDifficulty(String value) {
-    settings.difficulty = value;
     notifyListeners();
   }
 
@@ -57,17 +44,28 @@ class SettingsController extends ChangeNotifier {
   }
 
   Future<void> save() async {
+    saving = true;
+    notifyListeners();
+
     await _service.save(settings);
 
     final token = AuthService().token;
     if (token != null) {
       try {
         await ApiService.updateSettings(_toApiData(), token);
+        final userData = await ApiService.getUserProfile(token);
+        AuthService().updateUser(userData);
       } catch (_) {}
     }
+
+    saving = false;
+    notifyListeners();
   }
 
   Future<void> reset() async {
+    resetting = true;
+    notifyListeners();
+
     await _service.reset();
     settings = AppSettings.defaults();
     notifyListeners();
@@ -75,18 +73,20 @@ class SettingsController extends ChangeNotifier {
     final token = AuthService().token;
     if (token != null) {
       try {
-        await ApiService.updateSettings(_toApiData(), token);
+        await ApiService.resetProgress(token);
+        final userData = await ApiService.getUserProfile(token);
+        AuthService().updateUser(userData);
       } catch (_) {}
     }
+
+    resetting = false;
+    notifyListeners();
   }
 
   Map<String, dynamic> _toApiData() => {
     'sound_enabled': settings.soundEnabled,
     'music_enabled': settings.musicEnabled,
     'show_explanation': settings.showExplanation,
-    'question_count': settings.questionCount,
-    'time_per_question': settings.timePerQuestion,
     'theme_mode': settings.themeMode,
-    'difficulty': settings.difficulty,
   };
 }

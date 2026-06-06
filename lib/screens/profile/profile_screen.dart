@@ -49,8 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           final stats = _controller.stats;
           final user = _auth.user;
-          final name = user?['name'] as String? ?? 'Player';
-          final username = user?['username'] as String? ?? '';
+          final name = user?.name ?? 'Player';
+          final username = user?.username ?? '';
           final initials = _initials(name);
 
           return RefreshIndicator(

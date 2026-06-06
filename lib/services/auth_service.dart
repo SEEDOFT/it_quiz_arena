@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:it_quiz_arena/models/user_profile.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
 
 class AuthService extends ChangeNotifier {
@@ -12,12 +13,12 @@ class AuthService extends ChangeNotifier {
   static const String _userKey = 'auth_user';
 
   String? _token;
-  Map<String, dynamic>? _user;
+  UserProfile? _user;
   bool _isLoading = false;
 
   bool get isAuthenticated => _token != null && _user != null;
   String? get token => _token;
-  Map<String, dynamic>? get user => _user;
+  UserProfile? get user => _user;
   bool get isLoading => _isLoading;
 
   Map<String, String> get authHeaders {
@@ -36,7 +37,8 @@ class AuthService extends ChangeNotifier {
     _token = prefs.getString(_tokenKey);
     final userJson = prefs.getString(_userKey);
     if (userJson != null) {
-      _user = jsonDecode(userJson) as Map<String, dynamic>;
+      final map = jsonDecode(userJson) as Map<String, dynamic>;
+      _user = UserProfile.fromJson(map);
     } else {
       _user = null;
     }
@@ -50,11 +52,11 @@ class AuthService extends ChangeNotifier {
     try {
       final data = await ApiService.googleLogin(idToken);
       _token = data['token'] as String;
-      _user = data['user'] as Map<String, dynamic>;
+      _user = UserProfile.fromJson(data['user'] as Map<String, dynamic>);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_tokenKey, _token!);
-      await prefs.setString(_userKey, jsonEncode(_user));
+      await prefs.setString(_userKey, jsonEncode(data['user']));
 
       _isLoading = false;
       notifyListeners();
@@ -83,7 +85,7 @@ class AuthService extends ChangeNotifier {
   }
 
   void updateUser(Map<String, dynamic> data) {
-    _user = data;
+    _user = UserProfile.fromJson(data);
     notifyListeners();
     SharedPreferences.getInstance().then(
       (prefs) => prefs.setString(_userKey, jsonEncode(data)),

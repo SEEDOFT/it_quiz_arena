@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:it_quiz_arena/core/app_colors.dart';
 import 'package:it_quiz_arena/core/app_routes.dart';
-import 'course_selection_controller.dart';
+
+import 'package:it_quiz_arena/screens/course_selection/course_selection_controller.dart';
 
 class CourseSelectionScreen extends StatefulWidget {
   const CourseSelectionScreen({super.key});
@@ -27,19 +29,19 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
   Color categoryColor(String category) {
     switch (category) {
       case 'Programming':
-        return const Color(0xFF6366F1);
+        return AppColors.categoryProgramming;
       case 'Networking':
-        return const Color(0xFF3B82F6);
+        return AppColors.categoryNetworking;
       case 'Cyber Security':
-        return const Color(0xFFEF4444);
+        return AppColors.categoryCyberSecurity;
       case 'Database':
-        return const Color(0xFFA855F7);
+        return AppColors.categoryDatabase;
       case 'Web Development':
-        return const Color(0xFF22C55E);
+        return AppColors.categoryWebDevelopment;
       case 'Cloud & DevOps':
-        return const Color(0xFFF59E0B);
+        return AppColors.categoryCloudDevOps;
       default:
-        return const Color(0xFF6366F1);
+        return AppColors.primary;
     }
   }
 
@@ -50,7 +52,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: cs.surface,
         elevation: 0,
         title: const Text("Select Course"),
         leading: IconButton(
@@ -72,12 +74,15 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
           final filtered = _controller.filteredCourses;
           final selectedCourse = _controller.selectedCourse;
 
-          return Column(
+          return RefreshIndicator(
+            onRefresh: _controller.refresh,
+            child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: TextField(
                   controller: _controller.searchController,
+                  onChanged: (_) => _controller.onSearchChanged(),
                   decoration: InputDecoration(
                     hintText: 'Search courses...',
                     hintStyle: TextStyle(color: cs.outline),
@@ -108,9 +113,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                         label: Text(category),
                         selected: active,
                         selectedColor: cs.primary,
-                        labelStyle: TextStyle(
-                          color: active ? cs.onSurface : cs.onSurfaceVariant,
-                        ),
+                        labelStyle: TextStyle(color: active ? cs.onSurface : cs.onSurfaceVariant),
                         backgroundColor: cs.surfaceContainer,
                         onSelected: (_) => _controller.setCategory(category),
                       ),
@@ -127,6 +130,128 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     '${filtered.length} courses available',
                     style: TextStyle(color: cs.outline),
                   ),
+                ),
+              ),
+
+              Container(
+                margin: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: cs.surface,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Game Settings',
+                      style: TextStyle(
+                        color: cs.onSurfaceVariant,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: ['Beginner', 'Intermediate', 'Advanced']
+                          .map(
+                            (d) => Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 2),
+                                child: GestureDetector(
+                                  onTap: () => _controller.setDifficulty(d),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: _controller.difficulty == d
+                                          ? cs.primary
+                                          : cs.surfaceContainer,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      d,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: cs.onSurface,
+                                        fontSize: 11,
+                                        fontWeight: _controller.difficulty == d
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 110,
+                          child: Text(
+                            'Questions',
+                            style: TextStyle(color: cs.onSurface, fontSize: 13),
+                          ),
+                        ),
+                        Expanded(
+                          child: Slider(
+                            min: 5,
+                            max: 50,
+                            divisions: 9,
+                            value: _controller.questionCount.toDouble(),
+                            label: _controller.questionCount.toString(),
+                            onChanged: (v) => _controller.setQuestionCount(v.toInt()),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 28,
+                          child: Text(
+                            '${_controller.questionCount}',
+                            style: TextStyle(
+                              color: cs.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 110,
+                          child: Text(
+                            'Time per Q',
+                            style: TextStyle(color: cs.onSurface, fontSize: 13),
+                          ),
+                        ),
+                        Expanded(
+                          child: Slider(
+                            min: 10,
+                            max: 60,
+                            divisions: 10,
+                            value: _controller.timePerQuestion.toDouble(),
+                            label: '${_controller.timePerQuestion}s',
+                            onChanged: (v) => _controller.setTimePerQuestion(v.toInt()),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 28,
+                          child: Text(
+                            '${_controller.timePerQuestion}s',
+                            style: TextStyle(
+                              color: cs.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
 
@@ -149,43 +274,39 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: selected
-                              ? cs.primary.withValues(alpha: 0.12)
-                              : cs.surface,
+                          color: selected ? cs.primary.withValues(alpha: 0.12) : cs.surface,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: selected
-                                ? cs.primary
-                                : Theme.of(context).dividerColor,
+                            color: selected ? cs.primary : Theme.of(context).dividerColor,
                           ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.school,
-                              color: categoryColor(course.category),
-                            ),
+                            Icon(Icons.school, color: categoryColor(course.category)),
                             const SizedBox(height: 12),
                             Text(
                               course.title,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: cs.onSurface,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyle(color: cs.onSurface, fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
                             Text(
                               course.difficulty,
-                              style: TextStyle(color: Colors.green),
+                              style: TextStyle(
+                                color: course.difficulty == 'Advanced'
+                                    ? AppColors.difficultyAdvanced
+                                    : course.difficulty == 'Intermediate'
+                                        ? AppColors.difficultyIntermediate
+                                        : AppColors.difficultyBeginner,
+                              ),
                             ),
                             const SizedBox(height: 8),
                             LinearProgressIndicator(value: 0),
                             const SizedBox(height: 6),
                             Text(
-                              '${course.questionCount} Questions',
+                              '${_controller.questionCount} Questions',
                               style: TextStyle(color: cs.outline, fontSize: 12),
                             ),
                           ],
@@ -238,8 +359,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                                   arguments: {
                                     'courseId': selectedCourse.id,
                                     'questionCount': _controller.questionCount,
-                                    'timePerQuestion':
-                                        _controller.timePerQuestion,
+                                    'timePerQuestion': _controller.timePerQuestion,
                                     'difficulty': _controller.difficulty,
                                   },
                                 );
@@ -263,8 +383,9 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                       ),
               ),
             ],
-          );
-        },
+          ),
+        );
+      },
       ),
     );
   }

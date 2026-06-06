@@ -13,8 +13,7 @@ class ProfileController extends ChangeNotifier {
     load();
   }
 
-  Map<String, dynamic>? get user => _auth.user;
-  String? get avatar => user?['avatar'] as String?;
+  String? get avatar => _auth.user?.avatar;
 
   Future<void> load() async {
     loading = true;

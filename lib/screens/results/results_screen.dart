@@ -8,7 +8,7 @@ class ResultsScreen extends StatefulWidget {
   final int xpGained;
   final int? level;
   final bool levelUp;
-  final List<Map<String, dynamic>>? newAchievements;
+  final List<String>? newAchievements;
 
   const ResultsScreen({
     super.key,
@@ -206,7 +206,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         (a) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Text(
-                            a['title'] as String? ?? '',
+                            a.replaceAll('_', ' ').split(' ').map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : '').join(' '),
                             style: TextStyle(color: cs.onSurface),
                           ),
                         ),

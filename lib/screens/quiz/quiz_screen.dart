@@ -107,8 +107,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
           levelUp: parsedLevelUp,
           newAchievements:
               (_controller.finishData?['new_achievements'] as List<dynamic>?)
-                  ?.map((a) => a as Map<String, dynamic>)
-                  .toList(),
+                  ?.cast<String>(),
         ),
       ),
     );

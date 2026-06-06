@@ -4,6 +4,7 @@ class LeaderboardEntry {
   final int level;
   final String? rank;
   final int totalQuizzes;
+  final String? avatar;
 
   const LeaderboardEntry({
     required this.playerName,
@@ -11,6 +12,7 @@ class LeaderboardEntry {
     required this.level,
     this.rank,
     required this.totalQuizzes,
+    this.avatar,
   });
 
   factory LeaderboardEntry.fromJson(Map<String, dynamic> json) =>
@@ -20,5 +22,6 @@ class LeaderboardEntry {
         level: json['level'] as int? ?? 1,
         rank: json['rank'] as String?,
         totalQuizzes: json['total_quizzes'] as int? ?? 0,
+        avatar: json['avatar'] as String?,
       );
 }

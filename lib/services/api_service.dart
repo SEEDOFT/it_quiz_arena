@@ -232,6 +232,17 @@ class ApiService {
     }
   }
 
+  static Future<void> resetProgress(String token) async {
+    final response = await httpClient.post(
+      Uri.parse('${AppConstants.apiBaseUrl}/user/reset-progress'),
+      headers: _bearerHeaders(token),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to reset progress');
+    }
+  }
+
   static Map<String, String> _jsonHeaders() => {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

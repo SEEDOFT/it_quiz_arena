@@ -24,31 +24,24 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic>? get user => _auth.user;
-  String get name => user?['name'] as String? ?? 'Player';
-  String get username => user?['username'] as String? ?? '';
-  String get email => user?['email'] as String? ?? '';
-  int get xp => user?['xp'] as int? ?? 0;
-  int get level => user?['level'] as int? ?? 1;
-  int get totalQuizzes => user?['total_quizzes'] as int? ?? 0;
-  int get highestScore => user?['highest_score'] as int? ?? 0;
-  int get bestStreak => user?['best_streak'] as int? ?? 0;
-  String? get avatar => user?['avatar'] as String?;
-  String get currentRank => user?['current_rank'] as String? ?? 'Beginner';
-  int get nextRankXp => user?['next_rank_xp'] as int? ?? 100;
+  String get name => _auth.user?.name ?? 'Player';
+  String get username => _auth.user?.username ?? '';
+  String get email => _auth.user?.email ?? '';
+  int get xp => _auth.user?.xp ?? 0;
+  int get level => _auth.user?.level ?? 1;
+  int get totalQuizzes => _auth.user?.totalQuizzes ?? 0;
+  int get highestScore => _auth.user?.highestScore ?? 0;
+  int get bestStreak => _auth.user?.bestStreak ?? 0;
+  String? get avatar => _auth.user?.avatar;
+  String get currentRank => _auth.user?.currentRank ?? 'Beginner';
+  int get nextRankXp => _auth.user?.nextRankXp ?? 100;
 
   double get xpProgress {
     final next = nextRankXp;
     return next > 0 ? (xp / next).clamp(0.0, 1.0) : 0.0;
   }
 
-  String get initials {
-    final parts = name.split(' ');
-    if (parts.length >= 2) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
-    }
-    return name.isNotEmpty ? name[0].toUpperCase() : '?';
-  }
+  String get initials => _auth.user?.initials ?? '?';
 
   Future<void> loadLeaderboard() async {
     leaderboardLoading = true;

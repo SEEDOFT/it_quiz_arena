@@ -38,7 +38,7 @@ class RanksController extends ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    userXp = (AuthService().user?['xp'] as int?) ?? 0;
+    userXp = AuthService().user?.xp ?? 0;
 
     try {
       final data = await ApiService.getRanks();

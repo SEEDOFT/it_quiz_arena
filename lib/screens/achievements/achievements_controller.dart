@@ -20,9 +20,7 @@ class AchievementsController extends ChangeNotifier {
     try {
       final token = AuthService().token;
       final allData = await ApiService.getAchievements();
-      final all = allData
-          .map((j) => Achievement.fromJson(j as Map<String, dynamic>))
-          .toList();
+      final all = allData.map((j) => Achievement.fromJson(j as Map<String, dynamic>)).toList();
 
       if (token != null) {
         try {
@@ -38,11 +36,11 @@ class AchievementsController extends ChangeNotifier {
               all[i] = user;
             }
           }
-        } catch (_) {}
+        } on Exception catch (_) {}
       }
 
       achievements = all;
-    } catch (_) {}
+    } on Exception catch (_) {}
 
     loading = false;
     notifyListeners();

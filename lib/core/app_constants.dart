@@ -2,8 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConstants {
   // Google Sign-In (loaded from .env)
-  static String get googleServerClientId =>
-      dotenv.env['GOOGLE_SERVER_CLIENT_ID'] ?? '';
+  static String get googleServerClientId => dotenv.env['GOOGLE_SERVER_CLIENT_ID'] ?? '';
 
   // API Configuration
   static String get apiBaseUrl => '${dotenv.env['API_BASE_URL']}/api';
@@ -44,4 +43,7 @@ class AppConstants {
   // App Info
   static const String appName = 'IT Quiz Arena';
   static const String appVersion = '1.0.0';
+
+  //Login Logo
+  static const String googleLogo = "assets/images/svg/Google_G_logo.svg";
 }

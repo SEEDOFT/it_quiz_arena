@@ -87,6 +87,7 @@ class MockApiResponses {
     'level': 2,
     'rank': 'Specialist',
     'total_quizzes': 10,
+    'avatar': null,
   };
 
   static final sampleAchievement = {

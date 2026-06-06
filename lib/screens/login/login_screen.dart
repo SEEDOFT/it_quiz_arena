@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:it_quiz_arena/core/app_constants.dart';
 import 'package:it_quiz_arena/screens/home/home_screen.dart';
+
 import 'login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -72,11 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'Test your IT knowledge, climb the ranks,\nand become a legend',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: cs.outline,
-                        fontSize: 15,
-                        height: 1.4,
-                      ),
+                      style: TextStyle(color: cs.outline, fontSize: 15, height: 1.4),
                     ),
                     const Spacer(flex: 1),
                     if (_controller.errorMessage != null)
@@ -92,15 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: MediaQuery.of(context).size.width,
                       height: 56,
                       child: ElevatedButton.icon(
-                        onPressed: _controller.isGoogleLoading
-                            ? null
-                            : _handleGoogleLogin,
+                        onPressed: _controller.isGoogleLoading ? null : _handleGoogleLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black87,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           elevation: 2,
                         ),
                         icon: _controller.isGoogleLoading
@@ -112,24 +106,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.black87,
                                 ),
                               )
-                            : Image.network(
-                                'https://developers.google.com/identity/images/g-logo.png',
+                            : SvgPicture.asset(
+                                AppConstants.googleLogo,
                                 height: 24,
                                 width: 24,
                                 errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(
-                                      Icons.login,
-                                      color: Colors.black87,
-                                    ),
+                                    const Icon(Icons.login, color: Colors.black87),
                               ),
                         label: Text(
-                          _controller.isGoogleLoading
-                              ? 'Signing in...'
-                              : 'Sign in with Google',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          _controller.isGoogleLoading ? 'Signing in...' : 'Sign in with Google',
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),

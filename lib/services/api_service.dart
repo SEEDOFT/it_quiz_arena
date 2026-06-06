@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:it_quiz_arena/core/app_constants.dart';
 
@@ -26,10 +27,7 @@ class ApiService {
   static Future<Map<String, dynamic>> googleLogin(String idToken) async {
     final response = await httpClient.post(
       Uri.parse('${AppConstants.apiBaseUrl}/auth/google'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       body: jsonEncode({'token': idToken}),
     );
 
@@ -108,9 +106,7 @@ class ApiService {
     final result = jsonDecode(response.body) as Map<String, dynamic>;
 
     if (response.statusCode != 200) {
-      throw Exception(
-        result['status']?['message'] ?? 'Failed to submit answer',
-      );
+      throw Exception(result['status']?['message'] ?? 'Failed to submit answer');
     }
 
     return result['data'] as Map<String, dynamic>;
@@ -232,10 +228,7 @@ class ApiService {
     return body['data'] as Map<String, dynamic>;
   }
 
-  static Future<void> updateSettings(
-    Map<String, dynamic> data,
-    String token,
-  ) async {
+  static Future<void> updateSettings(Map<String, dynamic> data, String token) async {
     final response = await httpClient.put(
       Uri.parse('${AppConstants.apiBaseUrl}/user/settings'),
       headers: _bearerHeaders(token),
@@ -244,9 +237,7 @@ class ApiService {
 
     if (response.statusCode != 200) {
       final body = jsonDecode(response.body) as Map<String, dynamic>;
-      throw Exception(
-        body['status']?['message'] ?? 'Failed to update settings',
-      );
+      throw Exception(body['status']?['message'] ?? 'Failed to update settings');
     }
   }
 

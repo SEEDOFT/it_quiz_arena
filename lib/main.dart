@@ -7,6 +7,7 @@ import 'core/app_routes.dart';
 import 'core/app_theme.dart';
 import 'screens/splash/splash_screen.dart';
 import 'services/api_service.dart';
+import 'services/audio_service.dart';
 import 'services/auth_service.dart';
 import 'services/connectivity_service.dart';
 import 'services/settings_service.dart';
@@ -46,6 +47,7 @@ Future<void> main() async {
   );
 
   await AuthService().init();
+  await AudioService().init();
   ApiService.onUnauthorized = () async {
     await AuthService().clearSession();
     navigatorKey.currentState?.pushAndRemoveUntil(
@@ -80,6 +82,7 @@ class _ITQuizArenaAppState extends State<ITQuizArenaApp> {
   @override
   void dispose() {
     AppThemeNotifier().removeListener(_onThemeChanged);
+    AudioService().dispose();
     super.dispose();
   }
 

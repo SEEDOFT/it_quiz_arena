@@ -45,9 +45,7 @@ class CourseSelectionController extends ChangeNotifier {
   Future<void> _loadCourses() async {
     try {
       final data = await ApiService.getCourses();
-      final courses = data
-          .map((j) => Course.fromJson(j as Map<String, dynamic>))
-          .toList();
+      final courses = data.map((j) => Course.fromJson(j as Map<String, dynamic>)).toList();
       allCourses = courses;
 
       final cats = <String>{'All'};
@@ -120,17 +118,13 @@ class CourseSelectionController extends ChangeNotifier {
           course.title.toLowerCase().contains(query) ||
           course.description.toLowerCase().contains(query);
 
-      final matchesCategory =
-          activeCategory == 'All' || course.category == activeCategory;
+      final matchesCategory = activeCategory == 'All' || course.category == activeCategory;
 
       final matchesDifficulty = difficulty == course.difficulty;
 
       final matchesQuestionCount = course.questionCount >= questionCount;
 
-      return matchesSearch &&
-          matchesCategory &&
-          matchesDifficulty &&
-          matchesQuestionCount;
+      return matchesSearch && matchesCategory && matchesDifficulty && matchesQuestionCount;
     }).toList();
   }
 

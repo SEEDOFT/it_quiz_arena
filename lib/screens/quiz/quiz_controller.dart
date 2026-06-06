@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:it_quiz_arena/core/app_sounds.dart';
+import 'package:it_quiz_arena/core/app_constants.dart';
 import 'package:it_quiz_arena/models/question.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
@@ -113,7 +113,7 @@ class QuizController extends ChangeNotifier {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (remainingSeconds > 0) {
         if (remainingSeconds <= 5 && remainingSeconds > 0) {
-          AudioService().play(AppSounds.timeWarning);
+          AudioService().play(AppConstants.soundTimeWarning);
         }
         remainingSeconds--;
         timeSpentOnQuestion++;
@@ -168,9 +168,9 @@ class QuizController extends ChangeNotifier {
       lastExplanation = data['explanation'] as String?;
 
       if (lastAnswerCorrect == true) {
-        AudioService().play(AppSounds.correctAnswer);
+        AudioService().play(AppConstants.soundCorrectAnswer);
       } else {
-        AudioService().play(AppSounds.wrongAnswer);
+        AudioService().play(AppConstants.soundWrongAnswer);
       }
 
       final session = data['session'] as Map<String, dynamic>?;
@@ -205,7 +205,7 @@ class QuizController extends ChangeNotifier {
       lastAnswerCorrect = null;
       correctAnswerIndex = -1;
       lastExplanation = null;
-      AudioService().play(AppSounds.questionTransition);
+      AudioService().play(AppConstants.soundQuestionTransition);
       _startTimer();
     } else {
       _cycleComplete();
@@ -224,7 +224,9 @@ class QuizController extends ChangeNotifier {
           sessionId: sessionId!,
           token: token,
         );
-      } catch (_) {}
+      } on Exception {
+        //
+      }
     }
 
     onQuizFinished();
@@ -242,7 +244,9 @@ class QuizController extends ChangeNotifier {
             sessionId: sessionId!,
             token: token,
           );
-        } catch (_) {}
+        } on Exception {
+          //
+        }
       }
     }
     onQuizFinished();

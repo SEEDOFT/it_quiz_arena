@@ -99,14 +99,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildProfileCard(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final initials = _controller.initials;
-    final name = _controller.name;
-    final username = _controller.username;
-    final rank = _controller.currentRank;
-    final xp = _controller.xp;
-    final level = _controller.level;
+    final u = _controller.user;
+    final initials = u?.initials ?? '?';
+    final name = u?.name ?? 'Player';
+    final username = u?.username ?? '';
+    final xp = u?.xp ?? 0;
+    final level = u?.level ?? 1;
+    final rank = u?.currentRank ?? 'Beginner';
+    final nextXp = u?.nextRankXp ?? 100;
     final progress = _controller.xpProgress;
-    final nextXp = _controller.nextRankXp;
 
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoutes.profile),
@@ -128,10 +129,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 CircleAvatar(
                   radius: 30,
                   backgroundColor: cs.primary,
-                  backgroundImage: _controller.avatar != null
-                      ? NetworkImage(_controller.avatar!)
+                  backgroundImage: u?.avatar != null
+                      ? NetworkImage(u!.avatar!)
                       : null,
-                  child: _controller.avatar != null
+                  child: u?.avatar != null
                       ? null
                       : Text(
                           initials,
@@ -220,21 +221,21 @@ class _HomeScreenState extends State<HomeScreen> {
         _statCard(
           context,
           Icons.quiz_outlined,
-          '${_controller.totalQuizzes}',
+          '${_controller.user?.totalQuizzes ?? 0}',
           'Quizzes',
         ),
         const SizedBox(width: 10),
         _statCard(
           context,
           Icons.trending_up,
-          '${_controller.highestScore}',
+          '${_controller.user?.highestScore ?? 0}',
           'Best Score',
         ),
         const SizedBox(width: 10),
         _statCard(
           context,
           Icons.local_fire_department,
-          '${_controller.bestStreak}',
+          '${_controller.user?.bestStreak ?? 0}',
           'Best Streak',
         ),
       ],

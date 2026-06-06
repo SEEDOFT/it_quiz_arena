@@ -72,7 +72,9 @@ class AuthService extends ChangeNotifier {
     if (_token != null) {
       try {
         await ApiService.logout(_token!);
-      } catch (_) {}
+      } on Exception {
+        //
+      }
     }
 
     _token = null;

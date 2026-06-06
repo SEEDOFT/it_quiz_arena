@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:it_quiz_arena/core/app_sounds.dart';
+import 'package:it_quiz_arena/core/app_constants.dart';
 import 'package:it_quiz_arena/screens/course_selection/course_selection_screen.dart';
 import 'package:it_quiz_arena/screens/home/home_screen.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
@@ -44,15 +44,16 @@ class _ResultsScreenState extends State<ResultsScreen> {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      AudioService().play(AppSounds.quizFinish);
+      AudioService().play(AppConstants.soundQuizFinish);
       if (widget.levelUp) {
         Future.delayed(const Duration(milliseconds: 600), () {
-          AudioService().play(AppSounds.levelUp);
+          AudioService().play(AppConstants.soundLevelUp);
         });
       }
-      if (widget.newAchievements != null && widget.newAchievements!.isNotEmpty) {
+      if (widget.newAchievements != null &&
+          widget.newAchievements!.isNotEmpty) {
         Future.delayed(const Duration(milliseconds: 1200), () {
-          AudioService().play(AppSounds.achievementUnlock);
+          AudioService().play(AppConstants.soundAchievementUnlock);
         });
       }
     });
@@ -246,7 +247,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
                   onPressed: () {
-                    AudioService().play(AppSounds.buttonTap);
+                    AudioService().play(AppConstants.soundButtonTap);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -265,7 +266,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
                   onPressed: () {
-                    AudioService().play(AppSounds.buttonTap);
+                    AudioService().play(AppConstants.soundButtonTap);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

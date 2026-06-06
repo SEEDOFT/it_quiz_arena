@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/models/leaderboard.dart';
+import 'package:it_quiz_arena/models/user_profile.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
 import 'package:it_quiz_arena/services/settings_service.dart';
@@ -26,7 +27,9 @@ class HomeController extends ChangeNotifier {
       final profile = await ApiService.getUserProfile(token);
       _auth.updateUser(profile);
       notifyListeners();
-    } catch (_) {}
+    } on Exception {
+      //
+    }
   }
 
   Future<void> _loadSettings() async {
@@ -36,24 +39,14 @@ class HomeController extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get name => _auth.user?.name ?? 'Player';
-  String get username => _auth.user?.username ?? '';
-  String get email => _auth.user?.email ?? '';
-  int get xp => _auth.user?.xp ?? 0;
-  int get level => _auth.user?.level ?? 1;
-  int get totalQuizzes => _auth.user?.totalQuizzes ?? 0;
-  int get highestScore => _auth.user?.highestScore ?? 0;
-  int get bestStreak => _auth.user?.bestStreak ?? 0;
-  String? get avatar => _auth.user?.avatar;
-  String get currentRank => _auth.user?.currentRank ?? 'Beginner';
-  int get nextRankXp => _auth.user?.nextRankXp ?? 100;
+  UserProfile? get user => _auth.user;
 
   double get xpProgress {
-    final next = nextRankXp;
-    return next > 0 ? (xp / next).clamp(0.0, 1.0) : 0.0;
+    final u = _auth.user;
+    if (u == null) return 0.0;
+    final next = u.nextRankXp ?? 100;
+    return next > 0 ? (u.xp / next).clamp(0.0, 1.0) : 0.0;
   }
-
-  String get initials => _auth.user?.initials ?? '?';
 
   Future<void> loadLeaderboard() async {
     leaderboardLoading = true;
@@ -64,7 +57,9 @@ class HomeController extends ChangeNotifier {
       leaderboard = data
           .map((j) => LeaderboardEntry.fromJson(j as Map<String, dynamic>))
           .toList();
-    } catch (_) {}
+    } on Exception {
+      //
+    }
 
     leaderboardLoading = false;
     notifyListeners();
@@ -76,7 +71,9 @@ class HomeController extends ChangeNotifier {
       try {
         final profile = await ApiService.getUserProfile(token);
         _auth.updateUser(profile);
-      } catch (_) {}
+      } on Exception {
+        //
+      }
     }
 
     await loadLeaderboard();

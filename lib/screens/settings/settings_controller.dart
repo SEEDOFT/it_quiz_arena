@@ -55,7 +55,9 @@ class SettingsController extends ChangeNotifier {
         await ApiService.updateSettings(_toApiData(), token);
         final userData = await ApiService.getUserProfile(token);
         AuthService().updateUser(userData);
-      } catch (_) {}
+      } on Exception {
+        //
+      }
     }
 
     saving = false;
@@ -76,7 +78,9 @@ class SettingsController extends ChangeNotifier {
         await ApiService.resetProgress(token);
         final userData = await ApiService.getUserProfile(token);
         AuthService().updateUser(userData);
-      } catch (_) {}
+      } on Exception {
+        //
+      }
     }
 
     resetting = false;

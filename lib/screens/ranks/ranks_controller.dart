@@ -45,7 +45,9 @@ class RanksController extends ChangeNotifier {
       ranks = data
           .map((j) => Rank.fromJson(j as Map<String, dynamic>))
           .toList();
-    } catch (_) {}
+    } on Exception {
+      //
+    }
 
     loading = false;
     notifyListeners();

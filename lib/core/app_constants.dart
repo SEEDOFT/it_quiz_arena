@@ -47,4 +47,32 @@ class AppConstants {
 
   //Login Logo
   static const String googleLogo = "assets/images/svg/Google_G_logo.svg";
+
+  // API Endpoints
+  static const String authGoogle = '/auth/google';
+  static const String logout = '/logout';
+  static const String courses = '/courses';
+  static const String quizStart = '/quiz/start';
+  static const String quizAnswer = '/quiz/'; // append sessionId + '/answer'
+  static const String quizFinish = '/quiz/'; // append sessionId + '/finish'
+  static const String leaderboard = '/leaderboard';
+  static const String achievements = '/achievements';
+  static const String userAchievements = '/user/achievements';
+  static const String ranks = '/ranks';
+  static const String userProfile = '/user';
+  static const String userStats = '/user/stats';
+  static const String userSettings = '/user/settings';
+  static const String userResetProgress = '/user/reset-progress';
+
+  // Sound Effects
+  static const String soundCorrectAnswer = 'sounds/sfx/correct_answer.wav';
+  static const String soundWrongAnswer = 'sounds/sfx/wrong_answer.wav';
+  static const String soundButtonTap = 'sounds/sfx/button-tap.mp3';
+  static const String soundQuestionTransition =
+      'sounds/sfx/question-transition.mp3';
+  static const String soundTimeWarning = 'sounds/sfx/time-warning.mp3';
+  static const String soundQuizFinish = 'sounds/sfx/quiz-finish.mp3';
+  static const String soundAchievementUnlock =
+      'sounds/sfx/achievement-unlock.mp3';
+  static const String soundLevelUp = 'sounds/sfx/level-up.mp3';
 }

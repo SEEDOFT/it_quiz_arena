@@ -29,7 +29,9 @@ class ProfileController extends ChangeNotifier {
     try {
       final data = await ApiService.getUserStats(token);
       stats = UserStats.fromJson(data);
-    } catch (_) {}
+    } on Exception {
+      //
+    }
 
     loading = false;
     notifyListeners();

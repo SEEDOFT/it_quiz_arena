@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:it_quiz_arena/services/settings_service.dart';
 
 class AudioService {
@@ -24,9 +25,13 @@ class AudioService {
   Future<void> play(String path) async {
     if (!_soundEnabled) return;
 
-    final player = _players.putIfAbsent(path, () => AudioPlayer());
-    await player.stop();
-    await player.play(AssetSource(path));
+    try {
+      final player = _players.putIfAbsent(path, () => AudioPlayer());
+      await player.stop();
+      await player.play(AssetSource(path));
+    } catch (e) {
+      debugPrint('AudioService.play error: $e');
+    }
   }
 
   void dispose() {

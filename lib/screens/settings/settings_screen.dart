@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/main.dart';
 import 'package:it_quiz_arena/screens/login/login_screen.dart';
@@ -31,9 +34,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await _controller.save();
     AppThemeNotifier().setTheme(_controller.settings.themeMode);
     if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Settings saved')));
+      if (Platform.isIOS) {
+        showCupertinoDialog(
+          context: context,
+          builder: (ctx) {
+            Future.delayed(const Duration(seconds: 1), () {
+              if (ctx.mounted) {
+                Navigator.of(ctx).pop();
+              }
+            });
+            return const CupertinoAlertDialog(
+              title: Text('Settings saved'),
+            );
+          },
+        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(
+          content: Text('Settings saved'),
+          duration: Duration(seconds: 1),
+        ));
+      }
     }
   }
 

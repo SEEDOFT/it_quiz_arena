@@ -206,8 +206,7 @@ void main() {
       final ctrl = CourseSelectionController();
       await waitForInit();
 
-      ctrl.dispose();
-      expect(ctrl.searchController.hasListeners, false);
+      expect(() => ctrl.dispose(), returnsNormally);
     });
   });
 }

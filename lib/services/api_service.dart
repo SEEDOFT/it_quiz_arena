@@ -2,8 +2,26 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:it_quiz_arena/core/app_constants.dart';
 
+class _AuthInterceptingClient extends http.BaseClient {
+  final http.Client _inner = http.Client();
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    final response = await _inner.send(request);
+    if (response.statusCode == 401) {
+      ApiService.onUnauthorized?.call();
+    }
+    return response;
+  }
+
+  @override
+  void close() => _inner.close();
+}
+
 class ApiService {
-  static http.Client httpClient = http.Client();
+  static Future<void> Function()? onUnauthorized;
+
+  static http.Client httpClient = _AuthInterceptingClient();
 
   static Future<Map<String, dynamic>> googleLogin(String idToken) async {
     final response = await httpClient.post(

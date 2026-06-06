@@ -6,10 +6,13 @@ import 'core/app_constants.dart';
 import 'core/app_routes.dart';
 import 'core/app_theme.dart';
 import 'screens/splash/splash_screen.dart';
+import 'services/api_service.dart';
 import 'services/auth_service.dart';
 import 'services/connectivity_service.dart';
 import 'services/settings_service.dart';
 import 'widgets/connectivity_banner.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppThemeNotifier extends ChangeNotifier {
   static final AppThemeNotifier _instance = AppThemeNotifier._();
@@ -43,6 +46,13 @@ Future<void> main() async {
   );
 
   await AuthService().init();
+  ApiService.onUnauthorized = () async {
+    await AuthService().clearSession();
+    navigatorKey.currentState?.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const SplashScreen()),
+      (_) => false,
+    );
+  };
   await AppThemeNotifier().load();
   await ConnectivityService().init();
 
@@ -90,6 +100,7 @@ class _ITQuizArenaAppState extends State<ITQuizArenaApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppConstants.appName,
+      navigatorKey: navigatorKey,
       theme: _getTheme(),
       routes: AppRoutes.getRoutes(),
       home: const SplashScreen(),

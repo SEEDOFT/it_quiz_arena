@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/models/question.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
@@ -203,70 +202,19 @@ class QuizController extends ChangeNotifier {
   Future<void> _cycleComplete() async {
     if (_cycleEnding) return;
     _cycleEnding = true;
+    timer?.cancel();
 
     final token = AuthService().token;
     if (token != null && sessionId != null) {
       try {
-        await ApiService.finishQuiz(sessionId: sessionId!, token: token);
+        finishData = await ApiService.finishQuiz(
+          sessionId: sessionId!,
+          token: token,
+        );
       } catch (_) {}
     }
 
-    _shuffleQuestions();
-    await _startQuiz();
-  }
-
-  void _shuffleQuestions() {
-    final random = Random();
-    for (int i = questions.length - 1; i > 0; i--) {
-      final j = random.nextInt(i + 1);
-      final temp = questions[i];
-      questions[i] = questions[j];
-      questions[j] = temp;
-    }
-  }
-
-  Future<void> cancelQuiz() async {
-    _cancelled = true;
-    timer?.cancel();
-    if (!finishing && sessionId != null) {
-      finishing = true;
-      final token = AuthService().token;
-      if (token != null) {
-        try {
-          finishData = await ApiService.finishQuiz(
-            sessionId: sessionId!,
-            token: token,
-          );
-        } catch (_) {}
-      }
-    }
     onQuizFinished();
-  }
-
-  Color optionColor(int index) {
-    if (!answerSubmitted || questions.isEmpty) {
-      if (selectedAnswerIndex == index) {
-        return const Color(0xFF6366F1);
-      }
-      return const Color(0xFF1E293B);
-    }
-
-    if (answerLocked) {
-      if (selectedAnswerIndex == index) {
-        return const Color(0xFF6366F1).withValues(alpha: 0.4);
-      }
-      return const Color(0xFF1E293B);
-    }
-
-    if (index == correctAnswerIndex) {
-      return Colors.green;
-    }
-
-    if (index == selectedAnswerIndex) {
-      return Colors.red;
-    }
-
-    return const Color(0xFF1E293B);
   }
 
   @override

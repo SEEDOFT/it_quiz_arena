@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
 
@@ -6,7 +7,8 @@ void main() {
   group('AuthService', () {
     late AuthService auth;
 
-    setUp(() {
+    setUp(() async {
+      await dotenv.load(fileName: '.env');
       SharedPreferences.setMockInitialValues({});
       auth = AuthService();
     });

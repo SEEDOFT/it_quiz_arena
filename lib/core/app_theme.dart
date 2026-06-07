@@ -109,12 +109,20 @@ class AppTheme {
     final cs = ColorScheme.dark(
       primary: AppColors.primary,
       surface: const Color(0xFF1E293B),
-      surfaceContainerLow: const Color(0xFF0A0B12),
+      surfaceContainerLowest: const Color(0xFF0A0B12),
+      surfaceContainerLow: const Color(0xFF151B2E),
       surfaceContainer: const Color(0xFF334155),
       onSurface: const Color(0xFFFFFFFF),
       onSurfaceVariant: const Color(0xFFCBD5E1),
       outline: const Color(0xFF94A3B8),
       error: AppColors.error,
+    );
+
+    const radius12 = RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    );
+    const radius8 = RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
     );
 
     return ThemeData(
@@ -127,6 +135,29 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: cs.primary,
+          foregroundColor: cs.onPrimary,
+          shape: radius12,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: cs.primary,
+          side: BorderSide(color: cs.primary, width: 1.5),
+          shape: radius12,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: cs.primary,
+          shape: radius8,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        ),
       ),
       textTheme: _buildTextTheme(cs),
     );
@@ -144,6 +175,13 @@ class AppTheme {
       error: AppColors.error,
     );
 
+    const radius12 = RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    );
+    const radius8 = RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
@@ -155,6 +193,29 @@ class AppTheme {
         backgroundColor: Color(0xFFFFFFFF),
         elevation: 1,
         iconTheme: IconThemeData(color: Color(0xFF1F2937)),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: cs.primary,
+          foregroundColor: cs.onPrimary,
+          shape: radius12,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: cs.primary,
+          side: BorderSide(color: cs.primary, width: 1.5),
+          shape: radius12,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: cs.primary,
+          shape: radius8,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        ),
       ),
       textTheme: _buildTextTheme(cs),
     );

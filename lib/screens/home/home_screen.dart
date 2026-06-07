@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/models/leaderboard.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
+import 'package:it_quiz_arena/widgets/exit_dialog.dart';
 
 import 'home_controller.dart';
 
@@ -35,33 +37,41 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _controller.refresh,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ListenableBuilder(
-              listenable: _controller,
-              builder: (context, _) {
-                return Column(
-                  children: [
-                    const SizedBox(height: 16),
-                    _buildHeader(context),
-                    const SizedBox(height: 20),
-                    _buildProfileCard(context),
-                    const SizedBox(height: 20),
-                    _buildStatsRow(context),
-                    const SizedBox(height: 20),
-                    _buildGameSection(context),
-                    const SizedBox(height: 24),
-                    _buildLeaderboard(context),
-                    const SizedBox(height: 24),
-                  ],
-                );
-              },
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) {
+          confirmAndExitApp(context);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: _controller.refresh,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ListenableBuilder(
+                listenable: _controller,
+                builder: (context, _) {
+                  return Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      _buildHeader(context),
+                      const SizedBox(height: 20),
+                      _buildProfileCard(context),
+                      const SizedBox(height: 20),
+                      _buildStatsRow(context),
+                      const SizedBox(height: 20),
+                      _buildGameSection(context),
+                      const SizedBox(height: 24),
+                      _buildLeaderboard(context),
+                      const SizedBox(height: 24),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -86,11 +96,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         IconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.achievements),
+          onPressed: () {
+            AudioService().playTap();
+            Navigator.pushNamed(context, AppRoutes.achievements);
+          },
           icon: Icon(Icons.emoji_events, color: cs.primary),
         ),
         IconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.settings),
+          onPressed: () {
+            AudioService().playTap();
+            Navigator.pushNamed(context, AppRoutes.settings);
+          },
           icon: Icon(Icons.settings, color: cs.primary),
         ),
       ],
@@ -110,7 +126,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final progress = _controller.xpProgress;
 
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.profile),
+      onTap: () {
+        AudioService().playTap();
+        Navigator.pushNamed(context, AppRoutes.profile);
+      },
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -325,18 +344,14 @@ class _HomeScreenState extends State<HomeScreen> {
             width: double.infinity,
             height: 52,
             child: ElevatedButton.icon(
-              onPressed: () => Navigator.pushNamed(context, AppRoutes.courses),
+              onPressed: () {
+                AudioService().playTap();
+                Navigator.pushNamed(context, AppRoutes.courses);
+              },
               icon: const Icon(Icons.play_arrow),
               label: const Text(
                 "Start Game",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: cs.primary,
-                foregroundColor: cs.onSurface,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
               ),
             ),
           ),

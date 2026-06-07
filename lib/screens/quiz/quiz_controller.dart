@@ -280,6 +280,7 @@ class QuizController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _cancelled = true;
     timer?.cancel();
     super.dispose();
   }

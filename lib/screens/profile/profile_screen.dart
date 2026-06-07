@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/models/user_stats.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
+import 'package:it_quiz_arena/widgets/adaptive.dart';
+
 import 'profile_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,13 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: const Text('Profile & Stats'),
-        backgroundColor: cs.surface,
-        foregroundColor: cs.onSurface,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-      ),
+      appBar: buildAdaptiveAppBar(title: "Profile & Stats", context: context),
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, _) {
@@ -343,7 +340,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.ranks),
+      onTap: () {
+        AudioService().playTap();
+        Navigator.pushNamed(context, AppRoutes.ranks);
+      },
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(

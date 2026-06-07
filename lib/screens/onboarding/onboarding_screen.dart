@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/screens/login/login_screen.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
 import 'onboarding_controller.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -107,22 +108,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       width: MediaQuery.of(context).size.width,
                       height: 56,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: cs.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: _controller.next,
+                        onPressed: () {
+                          AudioService().playTap();
+                          _controller.next();
+                        },
                         child: Text(
                           _controller.currentPage ==
                                   _controller.pages.length - 1
                               ? 'GET STARTED'
                               : 'NEXT',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: cs.onSurface,
                           ),
                         ),
                       ),

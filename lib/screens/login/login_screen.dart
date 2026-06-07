@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:it_quiz_arena/core/app_constants.dart';
 import 'package:it_quiz_arena/screens/home/home_screen.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
 
 import 'login_controller.dart';
 
@@ -22,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleGoogleLogin() async {
+    AudioService().playTap();
     final success = await _controller.googleLogin();
     if (success && mounted) {
       Navigator.pushReplacement(

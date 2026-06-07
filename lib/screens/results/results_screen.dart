@@ -3,6 +3,7 @@ import 'package:it_quiz_arena/core/app_constants.dart';
 import 'package:it_quiz_arena/screens/course_selection/course_selection_screen.dart';
 import 'package:it_quiz_arena/screens/home/home_screen.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
+
 import 'results_controller.dart';
 
 class ResultsScreen extends StatefulWidget {
@@ -247,13 +248,13 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
                   onPressed: () {
-                    AudioService().play(AppConstants.soundButtonTap);
+                    AudioService().playTap();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (_) => const CourseSelectionScreen(),
                       ),
-                      (route) => false,
+                      (route) => route.isFirst,
                     );
                   },
                   child: const Text("Play Again"),
@@ -266,7 +267,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: OutlinedButton(
                   onPressed: () {
-                    AudioService().play(AppConstants.soundButtonTap);
+                    AudioService().playTap();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

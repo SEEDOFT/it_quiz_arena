@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/core/app_colors.dart';
 import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/screens/course_selection/course_selection_controller.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
+import 'package:it_quiz_arena/widgets/adaptive.dart';
 
 class CourseSelectionScreen extends StatefulWidget {
   const CourseSelectionScreen({super.key});
@@ -50,15 +52,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: cs.surface,
-          elevation: 0,
-          title: const Text("Select Course"),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
+        appBar: buildAdaptiveAppBar(title: "Select Course", context: context),
         body: ListenableBuilder(
           listenable: _controller,
           builder: (context, _) {
@@ -75,10 +69,16 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
 
             return RefreshIndicator(
               onRefresh: _controller.refresh,
-              child: Column(
+              child: ListView(
+                padding: EdgeInsets.fromLTRB(
+                  0,
+                  0,
+                  0,
+                  MediaQuery.of(context).viewInsets.bottom + 20,
+                ),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextField(
                       controller: _controller.searchController,
                       onChanged: (_) => _controller.onSearchChanged(),
@@ -95,6 +95,8 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                       ),
                     ),
                   ),
+
+                  const SizedBox(height: 12),
 
                   SizedBox(
                     height: 40,
@@ -118,8 +120,10 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                                   : cs.onSurfaceVariant,
                             ),
                             backgroundColor: cs.surfaceContainer,
-                            onSelected: (_) =>
-                                _controller.setCategory(category),
+                            onSelected: (_) {
+                              AudioService().playTap();
+                              _controller.setCategory(category);
+                            },
                           ),
                         );
                       },
@@ -127,7 +131,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -137,12 +141,15 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     ),
                   ),
 
+                  const SizedBox(height: 12),
+
                   Container(
-                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       color: cs.surface,
                       borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Theme.of(context).dividerColor),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +172,10 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                                       horizontal: 2,
                                     ),
                                     child: GestureDetector(
-                                      onTap: () => _controller.setDifficulty(d),
+                                      onTap: () {
+                                        AudioService().playTap();
+                                        _controller.setDifficulty(d);
+                                      },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                           vertical: 8,
@@ -211,12 +221,11 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                               ),
                             ),
                             Expanded(
-                              child: Slider(
+                              child: buildAdaptiveSlider(
                                 min: 5,
                                 max: 50,
                                 divisions: 9,
                                 value: _controller.questionCount.toDouble(),
-                                label: _controller.questionCount.toString(),
                                 onChanged: (v) =>
                                     _controller.setQuestionCount(v.toInt()),
                               ),
@@ -247,12 +256,11 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                               ),
                             ),
                             Expanded(
-                              child: Slider(
+                              child: buildAdaptiveSlider(
                                 min: 10,
                                 max: 60,
                                 divisions: 10,
                                 value: _controller.timePerQuestion.toDouble(),
-                                label: '${_controller.timePerQuestion}s',
                                 onChanged: (v) =>
                                     _controller.setTimePerQuestion(v.toInt()),
                               ),
@@ -274,9 +282,13 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     ),
                   ),
 
-                  Expanded(
+                  const SizedBox(height: 16),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
@@ -291,8 +303,10 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                             _controller.selectedCourseId == course.id;
 
                         return GestureDetector(
-                          onTap: () =>
-                              _controller.toggleCourseSelection(course.id),
+                          onTap: () {
+                            AudioService().playTap();
+                            _controller.toggleCourseSelection(course.id);
+                          },
                           child: Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
@@ -352,7 +366,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                     ),
                   ),
 
-                  Container(
+                  Padding(
                     padding: const EdgeInsets.all(20),
                     child: selectedCourse != null
                         ? Column(
@@ -375,7 +389,7 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '${selectedCourse.questionCount} Q',
+                                      '${_controller.questionCount} Q',
                                       style: TextStyle(color: cs.outline),
                                     ),
                                   ],
@@ -384,10 +398,12 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                               const SizedBox(height: 12),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width,
+                                height: 48,
                                 child: ElevatedButton.icon(
                                   icon: const Icon(Icons.play_arrow),
                                   label: const Text("Start Quiz"),
                                   onPressed: () {
+                                    AudioService().playTap();
                                     Navigator.pushNamed(
                                       context,
                                       AppRoutes.countdown,
@@ -410,6 +426,9 @@ class _CourseSelectionScreenState extends State<CourseSelectionScreen> {
                             decoration: BoxDecoration(
                               color: cs.surface,
                               borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Theme.of(context).dividerColor,
+                              ),
                             ),
                             child: Center(
                               child: Text(

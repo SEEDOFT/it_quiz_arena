@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/screens/results/results_screen.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
 
 import 'quiz_controller.dart';
 
@@ -50,7 +51,8 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
       _controller.cancelQuiz();
     }
   }
@@ -88,12 +90,19 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
               ),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(ctx, false),
-                  child: Text('Continue', style: TextStyle(color: cs.primary)),
+                  onPressed: () {
+                    AudioService().playTap();
+                    Navigator.pop(ctx, false);
+                  },
+                  child: const Text('Continue'),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pop(ctx, true),
-                  child: Text('Quit', style: TextStyle(color: Colors.red)),
+                  onPressed: () {
+                    AudioService().playTap();
+                    Navigator.pop(ctx, true);
+                  },
+                  style: TextButton.styleFrom(foregroundColor: cs.error),
+                  child: const Text('Quit'),
                 ),
               ],
             ),
@@ -122,12 +131,14 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
       context,
       MaterialPageRoute(
         builder: (_) => ResultsScreen(
-          sessionData: _controller.finishData?['session'] as Map<String, dynamic>?,
+          sessionData:
+              _controller.finishData?['session'] as Map<String, dynamic>?,
           xpGained: _controller.finishData?['xp_gained'] as int? ?? 0,
           level: _controller.finishData?['new_level'] as int?,
           levelUp: parsedLevelUp,
-          newAchievements: (_controller.finishData?['new_achievements'] as List<dynamic>?)
-              ?.cast<String>(),
+          newAchievements:
+              (_controller.finishData?['new_achievements'] as List<dynamic>?)
+                  ?.cast<String>(),
         ),
       ),
     );
@@ -173,13 +184,18 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
             return Scaffold(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: Center(
-                child: Text('No questions', style: TextStyle(color: cs.onSurface)),
+                child: Text(
+                  'No questions',
+                  style: TextStyle(color: cs.onSurface),
+                ),
               ),
             );
           }
 
           final currentQuestion = _controller.currentQuestion!;
-          final progress = (_controller.currentQuestionIndex + 1) / _controller.questions.length;
+          final progress =
+              (_controller.currentQuestionIndex + 1) /
+              _controller.questions.length;
 
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -192,9 +208,15 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                       children: [
                         IconButton(
                           icon: Icon(Icons.close, color: cs.onSurfaceVariant),
-                          onPressed: _onWillPop,
+                          tooltip: '',
+                          onPressed: () async {
+                            AudioService().playTap();
+                            await _onWillPop();
+                          },
                         ),
-                        Expanded(child: LinearProgressIndicator(value: progress)),
+                        Expanded(
+                          child: LinearProgressIndicator(value: progress),
+                        ),
                         const SizedBox(width: 12),
                         Text(
                           '${_controller.remainingSeconds} s',
@@ -266,17 +288,26 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                               decoration: BoxDecoration(
                                 color: Colors.red.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                                border: Border.all(
+                                  color: Colors.red.withValues(alpha: 0.3),
+                                ),
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(Icons.info_outline, color: Colors.red.shade300, size: 18),
+                                  Icon(
+                                    Icons.info_outline,
+                                    color: Colors.red.shade300,
+                                    size: 18,
+                                  ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       _controller.lastExplanation!,
-                                      style: TextStyle(color: Colors.red.shade200, fontSize: 13),
+                                      style: TextStyle(
+                                        color: Colors.red.shade200,
+                                        fontSize: 13,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -291,9 +322,13 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                         Expanded(
                           child: ElevatedButton(
                             onPressed:
-                                _controller.selectedAnswerIndex == -1 || _controller.answerSubmitted
+                                _controller.selectedAnswerIndex == -1 ||
+                                    _controller.answerSubmitted
                                 ? null
-                                : () => _controller.submitAnswer(),
+                                : () {
+                                    AudioService().playTap();
+                                    _controller.submitAnswer();
+                                  },
                             child: const Text('Submit'),
                           ),
                         ),
@@ -303,7 +338,10 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Score: ${_controller.score}', style: TextStyle(color: cs.onSurface)),
+                        Text(
+                          'Score: ${_controller.score}',
+                          style: TextStyle(color: cs.onSurface),
+                        ),
                         Text(
                           'Streak: ${_controller.streak}',
                           style: TextStyle(color: cs.onSurface),

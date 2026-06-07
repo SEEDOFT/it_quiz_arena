@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/models/app_settings.dart';
 import 'package:it_quiz_arena/services/api_service.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
 import 'package:it_quiz_arena/services/settings_service.dart';
 
@@ -48,6 +49,7 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
 
     await _service.save(settings);
+    await AudioService().reload();
 
     final token = AuthService().token;
     if (token != null) {

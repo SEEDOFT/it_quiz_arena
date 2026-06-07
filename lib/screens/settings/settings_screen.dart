@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/main.dart';
 import 'package:it_quiz_arena/screens/login/login_screen.dart';
+import 'package:it_quiz_arena/services/audio_service.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
+import 'package:it_quiz_arena/widgets/adaptive.dart';
 
 import 'settings_controller.dart';
 
@@ -43,18 +45,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Navigator.of(ctx).pop();
               }
             });
-            return const CupertinoAlertDialog(
-              title: Text('Settings saved'),
-            );
+            return const CupertinoAlertDialog(title: Text('Settings saved'));
           },
         );
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(
-          content: Text('Settings saved'),
-          duration: Duration(seconds: 1),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Settings saved'),
+            duration: Duration(seconds: 1),
+          ),
+        );
       }
     }
   }
@@ -73,28 +73,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _confirmReset(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Reset Progress'),
-        content: const Text(
-          'This will permanently delete all your quiz history, scores, XP, and achievements. This cannot be undone.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.error,
+
+    final confirmed = Platform.isIOS
+        ? await showCupertinoDialog<bool>(
+            context: context,
+            builder: (ctx) => CupertinoAlertDialog(
+              title: const Text('Reset Progress'),
+              content: const Text(
+                'This will permanently delete all your quiz history, scores, XP, and achievements. This cannot be undone.',
+              ),
+              actions: [
+                CupertinoDialogAction(
+                  onPressed: () => Navigator.pop(ctx, false),
+                  child: const Text('Cancel'),
+                ),
+                CupertinoDialogAction(
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    AudioService().playTap();
+                    Navigator.pop(ctx, true);
+                  },
+                  child: const Text('Reset'),
+                ),
+              ],
             ),
-            child: const Text('Reset'),
-          ),
-        ],
-      ),
-    );
+          )
+        : await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text('Reset Progress'),
+              content: const Text(
+                'This will permanently delete all your quiz history, scores, XP, and achievements. This cannot be undone.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    AudioService().playTap();
+                    Navigator.pop(ctx, false);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    AudioService().playTap();
+                    Navigator.pop(ctx, true);
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.error,
+                  ),
+                  child: const Text('Reset'),
+                ),
+              ],
+            ),
+          );
 
     if (confirmed == true && mounted) {
       await _controller.reset();
@@ -124,13 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
-            title: const Text("Settings"),
-            backgroundColor: cs.surface,
-            foregroundColor: cs.onSurface,
-            elevation: 0,
-            scrolledUnderElevation: 1,
-          ),
+          appBar: buildAdaptiveAppBar(title: "Settings", context: context),
           body: ListView(
             padding: const EdgeInsets.all(20),
             children: [
@@ -139,25 +164,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _buildSettingCard(
                 context,
                 children: [
-                  SwitchListTile(
-                    value: settings.soundEnabled,
+                  ListTile(
                     title: const Text("Sound"),
-                    onChanged: _controller.updateSound,
+                    trailing: buildAdaptiveSwitch(
+                      value: settings.soundEnabled,
+                      onChanged: (value) {
+                        AudioService().playTap();
+                        _controller.updateSound(value);
+                      },
+                    ),
                   ),
                   Divider(height: 1, color: Theme.of(context).dividerColor),
-                  SwitchListTile(
-                    value: settings.musicEnabled,
-                    title: const Text("Music"),
-                    onChanged: _controller.updateMusic,
-                  ),
-                  Divider(height: 1, color: Theme.of(context).dividerColor),
-                  SwitchListTile(
-                    value: settings.showExplanation,
+                  ListTile(
                     title: const Text("Show Explanation"),
                     subtitle: const Text(
                       "Display explanation after wrong answer",
                     ),
-                    onChanged: _controller.updateShowExplanation,
+                    trailing: buildAdaptiveSwitch(
+                      value: settings.showExplanation,
+                      onChanged: (value) {
+                        AudioService().playTap();
+                        _controller.updateShowExplanation(value);
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -206,26 +235,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: _controller.saving ? null : _handleSave,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: cs.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                  onPressed: _controller.saving
+                      ? null
+                      : () {
+                          AudioService().playTap();
+                          _handleSave();
+                        },
                   child: _controller.saving
-                      ? SizedBox(
+                      ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: cs.onSurface,
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Text(
-                          'Save Settings',
-                          style: TextStyle(color: cs.onSurface),
-                        ),
+                      : const Text('Save Settings'),
                 ),
               ),
               const SizedBox(height: 12),
@@ -235,12 +257,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: OutlinedButton(
                   onPressed: _controller.resetting
                       ? null
-                      : () => _confirmReset(context),
+                      : () {
+                          AudioService().playTap();
+                          _confirmReset(context);
+                        },
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: cs.error),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    backgroundColor: cs.error.withValues(alpha: 0.15),
+                    foregroundColor: cs.error,
                   ),
                   child: _controller.resetting
                       ? SizedBox(
@@ -262,14 +286,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: double.infinity,
                   height: 48,
                   child: OutlinedButton.icon(
-                    onPressed: _handleLogout,
-                    icon: Icon(Icons.logout, color: cs.error),
-                    label: Text('Logout', style: TextStyle(color: cs.error)),
+                    onPressed: () {
+                      AudioService().playTap();
+                      _handleLogout();
+                    },
+                    icon: const Icon(Icons.logout),
+                    label: const Text('Logout'),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: cs.error),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      foregroundColor: cs.error,
+                      backgroundColor: cs.error.withValues(alpha: 0.15),
                     ),
                   ),
                 ),
@@ -294,6 +320,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Row(
         children: [
@@ -357,11 +384,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     BuildContext context, {
     required List<Widget> children,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+    return Card(
+      color: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Theme.of(context).dividerColor),
       ),
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
       child: Column(children: children),
     );
   }
@@ -377,7 +408,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Expanded(
       child: GestureDetector(
-        onTap: () => _controller.updateTheme(label.toLowerCase()),
+        onTap: () {
+          AudioService().playTap();
+          _controller.updateTheme(label.toLowerCase());
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(

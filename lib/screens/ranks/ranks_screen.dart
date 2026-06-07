@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/models/rank.dart';
+import 'package:it_quiz_arena/widgets/adaptive.dart';
 import 'ranks_controller.dart';
 
 class RanksScreen extends StatefulWidget {
@@ -30,13 +31,7 @@ class _RanksScreenState extends State<RanksScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: const Text('IT Ranks'),
-        backgroundColor: cs.surface,
-        foregroundColor: cs.onSurface,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-      ),
+      appBar: buildAdaptiveAppBar(title: "IT Ranks", context: context),
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, _) {

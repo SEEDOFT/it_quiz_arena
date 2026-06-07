@@ -55,44 +55,47 @@ class _CountdownScreenState extends State<CountdownScreen> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      backgroundColor: cs.primary,
-      body: Center(
-        child: ListenableBuilder(
-          listenable: _controller,
-          builder: (context, _) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Get Ready!',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: cs.onSurface,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: cs.primary,
+        body: Center(
+          child: ListenableBuilder(
+            listenable: _controller,
+            builder: (context, _) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Get Ready!',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: cs.onPrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  '${_controller.countdown}',
-                  style: TextStyle(
-                    fontSize: 120,
-                    fontWeight: FontWeight.bold,
-                    color: cs.onSurface,
+                  const SizedBox(height: 40),
+                  Text(
+                    '${_controller.countdown}',
+                    style: TextStyle(
+                      fontSize: 120,
+                      fontWeight: FontWeight.bold,
+                      color: cs.onPrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  '${widget.questionCount} questions',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: cs.onSurface.withValues(alpha: 0.7),
+                  const SizedBox(height: 40),
+                  Text(
+                    '${widget.questionCount} questions',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: cs.onPrimary.withValues(alpha: 0.7),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

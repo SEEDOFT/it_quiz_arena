@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/models/achievement.dart';
+import 'package:it_quiz_arena/widgets/adaptive.dart';
+
 import 'achievements_controller.dart';
 
 class AchievementsScreen extends StatefulWidget {
@@ -30,13 +32,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: const Text('Achievements'),
-        backgroundColor: cs.surface,
-        foregroundColor: cs.onSurface,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-      ),
+      appBar: buildAdaptiveAppBar(title: "Achievements", context: context),
       body: ListenableBuilder(
         listenable: _controller,
         builder: (context, _) {

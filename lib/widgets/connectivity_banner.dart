@@ -36,7 +36,7 @@ class _ConnectivityBannerState extends State<ConnectivityBanner>
       children: [
         if (!_connectivity.isConnected)
           Container(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 8,
               bottom: 8,

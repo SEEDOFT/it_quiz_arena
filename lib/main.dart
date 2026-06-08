@@ -51,8 +51,8 @@ Future<void> main() async {
   await AudioService().init();
   ApiService.onUnauthorized = () async {
     await AuthService().clearSession();
-    navigatorKey.currentState?.pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const SplashScreen()),
+    navigatorKey.currentState?.pushNamedAndRemoveUntil(
+      AppRoutes.splash,
       (_) => false,
     );
   };

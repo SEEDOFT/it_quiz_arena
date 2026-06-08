@@ -341,7 +341,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             height: 52,
             child: ElevatedButton.icon(
               onPressed: () {

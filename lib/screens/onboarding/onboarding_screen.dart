@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:it_quiz_arena/screens/login/login_screen.dart';
+import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
 import 'onboarding_controller.dart';
 
@@ -20,10 +20,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _navigateToLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-    );
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
   }
 
   @override

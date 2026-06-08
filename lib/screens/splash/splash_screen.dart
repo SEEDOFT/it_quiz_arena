@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/core/app_constants.dart';
-import 'package:it_quiz_arena/screens/home/home_screen.dart';
-import 'package:it_quiz_arena/screens/login/login_screen.dart';
-import 'package:it_quiz_arena/screens/onboarding/onboarding_screen.dart';
+import 'package:it_quiz_arena/core/app_routes.dart';
+
 import 'splash_controller.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -49,33 +48,19 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _navigateToHome() {
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => HomeScreen(
-            numberOfQuestions: AppConstants.defaultQuestionCount,
-            timePerQuestion: AppConstants.defaultTimePerQuestion,
-          ),
-        ),
-      );
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     }
   }
 
   void _navigateToLogin() {
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
   }
 
   void _navigateToOnboarding() {
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
-      );
+      Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
     }
   }
 

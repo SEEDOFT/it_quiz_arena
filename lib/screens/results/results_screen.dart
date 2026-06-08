@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_quiz_arena/core/app_constants.dart';
-import 'package:it_quiz_arena/screens/course_selection/course_selection_screen.dart';
-import 'package:it_quiz_arena/screens/home/home_screen.dart';
+import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
 
 import 'results_controller.dart';
@@ -249,12 +248,10 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     AudioService().playTap();
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const CourseSelectionScreen(),
-                      ),
-                      (route) => route.isFirst,
+                      AppRoutes.courses,
+                      (route) => false,
                     );
                   },
                   child: const Text("Play Again"),
@@ -268,14 +265,9 @@ class _ResultsScreenState extends State<ResultsScreen> {
                 child: OutlinedButton(
                   onPressed: () {
                     AudioService().playTap();
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const HomeScreen(
-                          numberOfQuestions: 10,
-                          timePerQuestion: 30,
-                        ),
-                      ),
+                      AppRoutes.home,
                       (route) => false,
                     );
                   },

@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashController extends ChangeNotifier {
   final VoidCallback onAuthenticated;

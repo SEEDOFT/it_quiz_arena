@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-class AppTheme {
+final class AppTheme {
   static const _syne = 'Syne';
   static const _dmSans = 'DMSans';
 

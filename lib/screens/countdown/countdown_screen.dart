@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:it_quiz_arena/screens/quiz/quiz_screen.dart';
+import 'package:it_quiz_arena/core/app_routes.dart';
 import 'countdown_controller.dart';
 
 class CountdownScreen extends StatefulWidget {
@@ -31,16 +31,15 @@ class _CountdownScreenState extends State<CountdownScreen> {
 
   void _navigateToQuiz() {
     if (mounted) {
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(
-          builder: (_) => QuizScreen(
-            courseId: widget.courseId,
-            questionCount: widget.questionCount,
-            timePerQuestion: widget.timePerQuestion,
-            difficulty: widget.difficulty,
-          ),
-        ),
+        AppRoutes.quiz,
+        arguments: {
+          'courseId': widget.courseId,
+          'questionCount': widget.questionCount,
+          'timePerQuestion': widget.timePerQuestion,
+          'difficulty': widget.difficulty,
+        },
       );
     }
   }

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:it_quiz_arena/screens/results/results_screen.dart';
+import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
 
 import 'quiz_controller.dart';
@@ -120,27 +120,26 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
     if (!mounted) return;
 
     if (_controller.finishData == null) {
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false);
       return;
     }
 
     final levelUp = _controller.finishData?['level_up'];
     final parsedLevelUp = levelUp is bool ? levelUp : levelUp == 1;
 
-    Navigator.pushReplacement(
+    Navigator.pushReplacementNamed(
       context,
-      MaterialPageRoute(
-        builder: (_) => ResultsScreen(
-          sessionData:
-              _controller.finishData?['session'] as Map<String, dynamic>?,
-          xpGained: _controller.finishData?['xp_gained'] as int? ?? 0,
-          level: _controller.finishData?['new_level'] as int?,
-          levelUp: parsedLevelUp,
-          newAchievements:
-              (_controller.finishData?['new_achievements'] as List<dynamic>?)
-                  ?.cast<String>(),
-        ),
-      ),
+      AppRoutes.results,
+      arguments: {
+        'sessionData':
+            _controller.finishData?['session'] as Map<String, dynamic>?,
+        'xpGained': _controller.finishData?['xp_gained'] as int? ?? 0,
+        'level': _controller.finishData?['new_level'] as int?,
+        'levelUp': parsedLevelUp,
+        'newAchievements':
+            (_controller.finishData?['new_achievements'] as List<dynamic>?)
+                ?.cast<String>(),
+      },
     );
   }
 
@@ -283,7 +282,7 @@ class _QuizScreenState extends State<QuizScreen> with WidgetsBindingObserver {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: Container(
-                              width: double.infinity,
+                              width: MediaQuery.of(context).size.width,
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
                                 color: Colors.red.withValues(alpha: 0.1),

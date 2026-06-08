@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:it_quiz_arena/core/app_routes.dart';
 import 'package:it_quiz_arena/main.dart';
-import 'package:it_quiz_arena/screens/login/login_screen.dart';
 import 'package:it_quiz_arena/services/audio_service.dart';
 import 'package:it_quiz_arena/services/auth_service.dart';
 import 'package:it_quiz_arena/widgets/adaptive.dart';
@@ -61,21 +61,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _handleLogout() async {
     if (!mounted) return;
+    final navigator = Navigator.of(context);
     await AuthService().logout();
-    if (mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-        (_) => false,
-      );
-    }
+    if (!mounted) return;
+    navigator.pushNamedAndRemoveUntil(AppRoutes.login, (_) => false);
   }
 
   Future<void> _confirmReset(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
 
-    final confirmed = Platform.isIOS
-        ? await showCupertinoDialog<bool>(
+    final confirmed = await (Platform.isIOS
+        ? showCupertinoDialog<bool>(
             context: context,
             builder: (ctx) => CupertinoAlertDialog(
               title: const Text('Reset Progress'),
@@ -98,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
           )
-        : await showDialog<bool>(
+        : showDialog<bool>(
             context: context,
             builder: (ctx) => AlertDialog(
               title: const Text('Reset Progress'),
@@ -125,7 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-          );
+          ));
 
     if (confirmed == true && mounted) {
       await _controller.reset();
@@ -232,7 +228,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 24),
               SizedBox(
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 height: 48,
                 child: ElevatedButton(
                   onPressed: _controller.saving
@@ -252,7 +248,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 12),
               SizedBox(
-                width: double.infinity,
+                width: MediaQuery.of(context).size.width,
                 height: 48,
                 child: OutlinedButton(
                   onPressed: _controller.resetting
@@ -283,7 +279,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Divider(color: Theme.of(context).dividerColor),
                 const SizedBox(height: 12),
                 SizedBox(
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width,
                   height: 48,
                   child: OutlinedButton.icon(
                     onPressed: () {
